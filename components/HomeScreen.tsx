@@ -4,6 +4,7 @@ import {
     StatusBar,
     StyleSheet,
     Text,
+    TouchableOpacity,
     useColorScheme,
     View,
   } from 'react-native';
@@ -14,6 +15,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 function HomeScreen() {
 
   let [currentDate, setCurrentDate] = useState(moment(new Date()).format());
+  let [borderColor, setBorderColor] = useState(1);
 
   let addDay = () => {
     let newDate = moment(currentDate).add(1, 'days').format();
@@ -35,11 +37,15 @@ function HomeScreen() {
           </View>
 
           <View style={styles.section1}>
-            <Text style={styles.section1_1}>Today</Text>
-            <Text style={styles.section1_1}>Weekly</Text>
-            <Text style={styles.section1_1}>Monthly</Text>
-            <Text style={styles.section1_1}>Notes</Text>
+            <Text onPress={() => setBorderColor(1)} style={[styles.section1_1, {borderColor: borderColor == 1 ? '#0FE38A' : 'white'}]}>Today</Text>
+            <Text onPress={() => setBorderColor(2)} style={[styles.section1_1, {borderColor: borderColor == 2 ? '#0FE38A' : 'white'}]}>Weekly</Text>
+            <Text onPress={() => setBorderColor(3)} style={[styles.section1_1, {borderColor: borderColor == 3 ? '#0FE38A' : 'white'}]}>Monthly</Text>
+            <Text onPress={() => setBorderColor(4)} style={[styles.section1_1, {borderColor: borderColor == 4 ? '#0FE38A' : 'white'}]}>Notes</Text>
           </View>
+
+          <TouchableOpacity style={styles.fab} activeOpacity={0.8}>
+          <MaterialIcons name="add" color="black" size={40} />
+          </TouchableOpacity>
 
         </SafeAreaView>
       );
@@ -64,7 +70,6 @@ const styles = StyleSheet.create({
   },
 
   section1: {
-    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: "space-between",
@@ -75,13 +80,24 @@ const styles = StyleSheet.create({
 
   section1_1: {
     width: '23%',
-    height: '5%',
     borderWidth: 2,
     borderStyle: 'solid',
-    borderColor: 'white',
+    padding: 3,
     textAlign: 'center',
-    padding: 7,
     color: 'white',
+  },
+
+  fab: {
+    flex: 1,
+    justifyContent:'center',
+    alignItems: 'center',
+    width: 45,  
+    height: 45,   
+    borderRadius: 5,            
+    backgroundColor: 'white',                                    
+    position: 'absolute',                                          
+    bottom: 10,                                                    
+    right: 10, 
   }
 
 });
