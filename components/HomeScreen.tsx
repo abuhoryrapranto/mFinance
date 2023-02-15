@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 import moment from 'moment'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-function HomeScreen() {
+function HomeScreen({navigation}: {navigation: any}) {
 
   let [currentDate, setCurrentDate] = useState(moment(new Date()).format());
   let [borderColor, setBorderColor] = useState(1);
@@ -40,12 +40,14 @@ function HomeScreen() {
             <Text onPress={() => setBorderColor(1)} style={[styles.section1_1, {borderColor: borderColor == 1 ? '#0FE38A' : 'white'}]}>Today</Text>
             <Text onPress={() => setBorderColor(2)} style={[styles.section1_1, {borderColor: borderColor == 2 ? '#0FE38A' : 'white'}]}>Weekly</Text>
             <Text onPress={() => setBorderColor(3)} style={[styles.section1_1, {borderColor: borderColor == 3 ? '#0FE38A' : 'white'}]}>Monthly</Text>
-            <Text onPress={() => setBorderColor(4)} style={[styles.section1_1, {borderColor: borderColor == 4 ? '#0FE38A' : 'white'}]}>Notes</Text>
+            <Text onPress={() => navigation.navigate('Note')} style={[styles.section1_1, {borderColor: 'white'}]}>Notes</Text>
           </View>
 
-          <TouchableOpacity style={styles.fab} activeOpacity={0.8}>
-          <MaterialIcons name="add" color="black" size={40} />
+          <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={() => navigation.navigate('Add')}>
+            <MaterialIcons name="add" color="black" size={40} />
           </TouchableOpacity>
+
+          
 
         </SafeAreaView>
       );
@@ -53,8 +55,7 @@ function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#333333",
+    flex: 1
     
   },
   currentDateView: {

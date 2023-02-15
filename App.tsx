@@ -6,143 +6,19 @@
  */
 
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import StackNavigation from './components/StackNavigation';
+import 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
 
-import HomeScreen from './components/HomeScreen'
-
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
-const Tab = createBottomTabNavigator();
+const myTheme = DefaultTheme;
+myTheme.colors.background = "#333333";
 
 function App(): JSX.Element {
 
   return (
-   
-    <NavigationContainer>
-      <Tab.Navigator 
-      
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle:{
-          backgroundColor: "#333333",
-        },
-        }}
-        
-        >
-        <Tab.Screen name="Home" component={HomeScreen} 
-
-          options={({route}) => ({
-
-            tabBarIcon: ({ focused }) => {
-
-              let iconColor;
-
-              if(route.name == "Home") {
-                iconColor = focused ? "#0FE38A" : "white";
-              }
-
-              return <MaterialIcons name="dashboard-customize" color={iconColor} size={26} />
-            },
-            tabBarLabelStyle:{
-              color: "white",
-              fontSize: 12,
-            }
-          })
-          }
-        />
-        <Tab.Screen name="Budget" component={SettingsScreen}
-        
-        options={({route}) => ({
-
-          tabBarIcon: ({ focused }) => {
-
-            let iconColor;
-
-            if(route.name == "Budget") {
-              iconColor = focused ? "#0FE38A" : "white";
-            }
-
-            return <MaterialIcons name="calendar-today" color={iconColor} size={26} />
-          },
-          tabBarLabelStyle:{
-            color: "white",
-            fontSize: 12,
-          }
-        })
-        }
-        
-        />
-        <Tab.Screen name="Chart" component={HomeScreen} 
-        
-        options={({route}) => ({
-
-          tabBarIcon: ({ focused }) => {
-
-            let iconColor;
-
-            if(route.name == "Chart") {
-              iconColor = focused ? "#0FE38A" : "white";
-            }
-
-            return <MaterialIcons name="pie-chart" color={iconColor} size={26} />
-          },
-          tabBarLabelStyle:{
-            color: "white",
-            fontSize: 12,
-          }
-        })
-        }
-        
-        />
-        <Tab.Screen name="More" component={SettingsScreen} 
-        
-        options={({route}) => ({
-
-          tabBarIcon: ({ focused }) => {
-
-            let iconColor;
-
-            if(route.name == "More") {
-              iconColor = focused ? "#0FE38A" : "white";
-            }
-
-            return <MaterialIcons name="more-vert" color={iconColor} size={26} />
-          },
-          tabBarLabelStyle:{
-            color: "white",
-            fontSize: 12,
-          }
-        })
-        }
-        
-        />
-      </Tab.Navigator>
+    <NavigationContainer theme={myTheme}>
+      <StackNavigation />
     </NavigationContainer>
     
   );
