@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HomeScreen from '../components/HomeScreen';
+import Budget from './Budget';
 
 
 import {
@@ -58,7 +59,7 @@ function BottomTabNavigation() {
                 })
                 }
                 />
-                <Tab.Screen name="Budget" component={SettingsScreen}
+                <Tab.Screen name="Budget" component={Budget}
                 
                 options={({route}) => ({
 

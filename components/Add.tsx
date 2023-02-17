@@ -10,11 +10,13 @@ import {
     TextInput,
     Button,
     KeyboardAvoidingView,
+    Dimensions,
   } from 'react-native';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-native-date-picker';
+import RNPickerSelect from 'react-native-picker-select';
 
 function Add({navigation}: {navigation: any}) {
 
@@ -36,6 +38,24 @@ function Add({navigation}: {navigation: any}) {
             setHeaderText('Expense');
         }
     }
+
+    const categoryExpense = [
+        { label: 'Food', value: 'Food' },
+        { label: 'Transport', value: 'Transport' },
+        { label: 'Household', value: 'Household' },
+        { label: 'Bills', value: 'Bills' },
+        { label: 'Cloths', value: 'Cloths' },
+        { label: 'Gifts', value: 'Gifts' },
+        { label: 'Health', value: 'Health' },
+        { label: 'Others', value: 'Others' },
+    ];
+
+    const categoryIncome = [
+        { label: 'Salary', value: 'Salary' },
+        { label: 'Cash', value: 'Cash' },
+        { label: 'Bonus', value: 'Bonus' },
+        { label: 'Others', value: 'Others' },
+    ];
 
     // useEffect(() => {
     //     chnageTab;
@@ -69,6 +89,36 @@ function Add({navigation}: {navigation: any}) {
                 <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{color: 'white', fontSize: 15, width: 100}}>Amount</Text>
                     <TextInput style={styles.input} keyboardType='numeric'></TextInput>
+                </View>
+                
+                <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={{color: 'white', fontSize: 15, width: 100}}>Category</Text>
+                    <RNPickerSelect style={pickerSelectStyles}
+                        onValueChange={(value) => console.log(value)}
+                        items={tabChange === 1 ? categoryExpense : categoryIncome}
+                    />
+                </View>
+
+                <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={{color: 'white', fontSize: 15, width: 100}}>Account Type</Text>
+                    <RNPickerSelect style={pickerSelectStyles}
+                        onValueChange={(value) => console.log(value)}
+                        items={[
+                            { label: 'Cash', value: 'Cash' },
+                            { label: 'Card', value: 'Card' }, 
+                        ]}
+                    />
+                </View>
+
+                <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={{color: 'white', fontSize: 15, width: 100}}>Note</Text>
+                    <TextInput style={styles.input}></TextInput>
+                </View>
+
+                <View>
+                    <TouchableOpacity style={styles.saveBtn}>
+                        <Text style={{color: 'white', fontSize: 18, fontWeight: '700'}}>Save</Text>
+                    </TouchableOpacity>
                 </View>
 
             </View>
@@ -133,6 +183,29 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500'
       },
+
+      saveBtn: {
+        borderColor: '#0FE38A',
+        borderRadius: 5,
+        backgroundColor: '#0FE38A',
+        marginTop: 30,
+        padding: 13,
+        alignItems: 'center',
+      }
 })
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        flex: 1,
+        borderWidth: 1,
+        paddingTop: 17,
+        paddingLeft: 10,
+        paddingBottom: 17,
+        borderColor: 'white',
+        borderRadius: 5,
+        color: 'white',
+        width: Dimensions.get('window').width / 1.45
+    },
+});
 
 export default Add;
