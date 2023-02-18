@@ -11,12 +11,14 @@ import {
     Button,
     KeyboardAvoidingView,
     Dimensions,
+    Alert,
   } from 'react-native';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-native-date-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Add({navigation}: {navigation: any}) {
 
@@ -24,6 +26,10 @@ function Add({navigation}: {navigation: any}) {
     const [tabChange, setTabChange] = useState(1);
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
+    const [amount, setAmount] = useState('');
+    const [category, setCategory] = useState('');
+    const [accountType, setAccountType] = useState('');
+    const [note, setNote] = useState('');
 
     const chnageTab = (num : number) => {
 
@@ -57,9 +63,109 @@ function Add({navigation}: {navigation: any}) {
         { label: 'Others', value: 'Others' },
     ];
 
-    // useEffect(() => {
-    //     chnageTab;
-    // }, []);
+    const store = async () => {
+
+        if(date == null) {
+
+            Alert.alert('Date can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);
+        }
+
+        else if(amount == '') {
+            
+            Alert.alert('Amount can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);
+
+        } 
+
+        else if(category == '') {
+            
+            Alert.alert('Category can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);
+
+        }
+
+        else if(accountType == '') {
+            
+            Alert.alert('Account Type can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);
+
+        } 
+        
+        else {
+
+            let addItem : any = {
+                type: tabChange === 0 ? 'Income' : 'Expense',
+                date: date,
+                amount: parseFloat(amount),
+                category: category,
+                accountType: accountType,
+                note: note == '' ? '' : note
+            }
+    
+            try {
+    
+                let incExp = await AsyncStorage.getItem('@incExp');
+    
+                if(incExp !== null) {
+                  
+                    let parseIncExp = JSON.parse(incExp);
+                    parseIncExp.push(addItem);
+                    
+                    await AsyncStorage.setItem('@incExp', JSON.stringify(parseIncExp));
+                    setAmount('');
+                    setCategory('');
+                    setAccountType('');
+                    setNote('');
+                    console.log('success');
+    
+                } else {
+                    await AsyncStorage.setItem('@incExp', JSON.stringify([addItem]));
+                    setAmount('');
+                    setCategory('');
+                    setAccountType('');
+                    setNote('');
+                    console.log('success');
+                }
+              } catch(e) {
+    
+                console.log(e);
+              }
+        }
+    }
+
+    const removeValue = async () => {
+        try {
+          await AsyncStorage.removeItem('@incExp')
+        } catch(e) {
+          console.log(e);
+        }
+      
+        console.log('Done.')
+      }
+
+    const getData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('@incExp')
+          if(value !== null) {
+            console.log(JSON.parse(value));
+          }
+        } catch(e) {
+          console.log(e);
+        }
+      }
+
+    useEffect(() => {
+        getData();
+    }, []);
 
 
 
@@ -88,13 +194,14 @@ function Add({navigation}: {navigation: any}) {
 
                 <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{color: 'white', fontSize: 15, width: 100}}>Amount</Text>
-                    <TextInput style={styles.input} keyboardType='numeric'></TextInput>
+                    <TextInput style={styles.input} keyboardType='numeric' value={amount} onChangeText={newAmount => setAmount(newAmount)}></TextInput>
                 </View>
                 
                 <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{color: 'white', fontSize: 15, width: 100}}>Category</Text>
                     <RNPickerSelect style={pickerSelectStyles}
-                        onValueChange={(value) => console.log(value)}
+                        value={category}
+                        onValueChange={(value) => setCategory(value)}
                         items={tabChange === 1 ? categoryExpense : categoryIncome}
                     />
                 </View>
@@ -102,7 +209,8 @@ function Add({navigation}: {navigation: any}) {
                 <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{color: 'white', fontSize: 15, width: 100}}>Account Type</Text>
                     <RNPickerSelect style={pickerSelectStyles}
-                        onValueChange={(value) => console.log(value)}
+                        value={accountType}
+                        onValueChange={(value) => setAccountType(value)}
                         items={[
                             { label: 'Cash', value: 'Cash' },
                             { label: 'Card', value: 'Card' }, 
@@ -112,11 +220,11 @@ function Add({navigation}: {navigation: any}) {
 
                 <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{color: 'white', fontSize: 15, width: 100}}>Note</Text>
-                    <TextInput style={styles.input}></TextInput>
+                    <TextInput style={styles.input} value={note} onChangeText={newNote => setNote(newNote)}></TextInput>
                 </View>
 
                 <View>
-                    <TouchableOpacity style={styles.saveBtn}>
+                    <TouchableOpacity style={styles.saveBtn} onPress={store}>
                         <Text style={{color: 'white', fontSize: 18, fontWeight: '700'}}>Save</Text>
                     </TouchableOpacity>
                 </View>
