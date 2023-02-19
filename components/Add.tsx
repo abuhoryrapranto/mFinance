@@ -19,6 +19,7 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-native-date-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
 
 function Add({navigation}: {navigation: any}) {
 
@@ -96,16 +97,17 @@ function Add({navigation}: {navigation: any}) {
             Alert.alert('Account Type can not be empty', '', [
                 
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ]);
+            ]);
 
         } 
         
         else {
 
             let addItem : any = {
+                id: uuid.v4(),
                 type: tabChange === 0 ? 'Income' : 'Expense',
                 date: date,
-                amount: parseFloat(amount),
+                amount: parseFloat(amount).toFixed(2),
                 category: category,
                 accountType: accountType,
                 note: note == '' ? '' : note
@@ -125,6 +127,12 @@ function Add({navigation}: {navigation: any}) {
                     setCategory('');
                     setAccountType('');
                     setNote('');
+
+                    Alert.alert(tabChange == 0 ? 'Income saved successfully' : 'Expense saved successfully', '', [
+                
+                        {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    ]);
+
                     console.log('success');
     
                 } else {
@@ -133,6 +141,12 @@ function Add({navigation}: {navigation: any}) {
                     setCategory('');
                     setAccountType('');
                     setNote('');
+
+                    Alert.alert(tabChange == 0 ? 'Income saved successfully' : 'Expense saved successfully', '', [
+                
+                        {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    ]);
+                    
                     console.log('success');
                 }
               } catch(e) {

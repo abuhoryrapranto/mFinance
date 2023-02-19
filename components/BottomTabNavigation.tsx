@@ -55,7 +55,8 @@ function BottomTabNavigation() {
                     tabBarLabelStyle:{
                     color: "white",
                     fontSize: 12,
-                    }
+                    },
+                    unmountOnBlur: true
                 })
                 }
                 />

@@ -8,14 +8,19 @@ import {
     useColorScheme,
     View,
   } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 function HomeScreen({navigation}: {navigation: any}) {
 
+  const isFocused = useIsFocused();
+
   let [currentDate, setCurrentDate] = useState(moment(new Date()).format());
   let [borderColor, setBorderColor] = useState(1);
+  const [incExp, setIncExp] = useState<any[]>([]);
 
   let addDay = () => {
     let newDate = moment(currentDate).add(1, 'days').format();
@@ -26,6 +31,22 @@ function HomeScreen({navigation}: {navigation: any}) {
     let newDate = moment(currentDate).subtract(1, 'days').format();
     setCurrentDate(newDate);
   }
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@incExp')
+      if(value !== null) {
+        setIncExp(JSON.parse(value));
+        console.log('Done');
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+useEffect(() => {
+    getData();
+}, [isFocused]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -57,6 +78,41 @@ function HomeScreen({navigation}: {navigation: any}) {
                 <Text style={styles.section2_1_1}>10.00 $</Text>
             </View>
           </View>
+
+          <View style={{marginTop: 20, borderBottomColor: 'white', borderBottomWidth: 1}}></View>
+
+          <ScrollView>
+
+            {
+              incExp.length > 0 ?
+              <>
+
+              {
+                incExp.map(item => (
+
+                  <View style={styles.section3} key={item.id}>
+                    <View style={styles.section3_1}>
+                        <Text style={{color: 'white'}}>{item.category}</Text>
+                    </View>
+                    <View style={styles.section3_1}>
+                        <Text style={{color: 'white', fontWeight: '700'}}>{item.note != '' ? item.note : 'No Descr.' }</Text>
+                        <Text style={{color: 'white'}}>{item.accountType}</Text>
+                    </View>
+                    <View style={styles.section3_1}>
+                        <Text style={{color: item.type == 'Expense' ? '#FD6868' : '#0FE38A'}}>{item.amount} $</Text>
+                    </View>
+                  </View>
+
+                ))
+              }
+
+              
+              
+              </>
+              : <Text>No Data Found!</Text>
+            }
+
+          </ScrollView>
 
           <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={() => navigation.navigate('Add')}>
             <MaterialIcons name="add" color="black" size={40} />
@@ -125,6 +181,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 15,
     fontWeight: '500'
+  },
+
+  section3: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: "space-between",
+    borderBottomWidth: 1, 
+    borderBottomColor: 'white',
+  },
+
+  section3_1: {
+    width: '30%',
+    padding: 12
   },
 
   fab: {
