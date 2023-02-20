@@ -7,12 +7,14 @@ import {
     TouchableOpacity,
     useColorScheme,
     View,
+    Animated,
   } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 function HomeScreen({navigation}: {navigation: any}) {
 
@@ -42,6 +44,19 @@ function HomeScreen({navigation}: {navigation: any}) {
     } catch(e) {
       console.log(e);
     }
+  }
+
+  const swipeRight = (progress : any,dragX : any) =>{
+    const scale = dragX.interpolate({
+      inputRange:[-200,0],
+      outputRange:[1,0.5],
+      extrapolate:'clamp'
+    })
+    return(
+      <Animated.View style={{backgroundColor:'#FD6868',width:"40%",justifyContent:'center', borderBottomColor: 'white', borderBottomWidth: 1}}>
+        <Animated.Text style={{marginLeft:'auto',marginRight:50, fontSize:15, fontWeight:'bold', color:'white', transform:[{scale}]}}>Delete</Animated.Text>
+      </Animated.View>
+    )
   }
 
 useEffect(() => {
@@ -90,7 +105,9 @@ useEffect(() => {
               {
                 incExp.map(item => (
 
-                  <View style={styles.section3} key={item.id}>
+                  <Swipeable key={item.id} renderRightActions={swipeRight} rightThreshold={-200}>
+
+                  <View style={styles.section3}>
                     <View style={styles.section3_1}>
                         <Text style={{color: 'white'}}>{item.category}</Text>
                     </View>
@@ -102,6 +119,8 @@ useEffect(() => {
                         <Text style={{color: item.type == 'Expense' ? '#FD6868' : '#0FE38A'}}>{item.amount} $</Text>
                     </View>
                   </View>
+
+                  </Swipeable>
 
                 ))
               }

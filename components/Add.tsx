@@ -146,7 +146,7 @@ function Add({navigation}: {navigation: any}) {
                 
                         {text: 'OK', onPress: () => console.log('OK Pressed')},
                     ]);
-                    
+
                     console.log('success');
                 }
               } catch(e) {
@@ -166,20 +166,20 @@ function Add({navigation}: {navigation: any}) {
         console.log('Done.')
       }
 
-    const getData = async () => {
-        try {
-          const value = await AsyncStorage.getItem('@incExp')
-          if(value !== null) {
-            console.log(JSON.parse(value));
-          }
-        } catch(e) {
-          console.log(e);
-        }
-      }
+    // const getData = async () => {
+    //     try {
+    //       const value = await AsyncStorage.getItem('@incExp')
+    //       if(value !== null) {
+    //         console.log(JSON.parse(value));
+    //       }
+    //     } catch(e) {
+    //       console.log(e);
+    //     }
+    //   }
 
-    useEffect(() => {
-        getData();
-    }, []);
+    // useEffect(() => {
+    //     getData();
+    // }, []);
 
 
 
