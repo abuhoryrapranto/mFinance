@@ -8,21 +8,26 @@ import {
     useColorScheme,
     View,
     Animated,
+    Alert,
   } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 
 function HomeScreen({navigation}: {navigation: any}) {
 
   const isFocused = useIsFocused();
+  const swipeableRef = useRef<Swipeable[]>([]);
 
   let [currentDate, setCurrentDate] = useState(moment(new Date()).format());
   let [borderColor, setBorderColor] = useState(1);
   const [incExp, setIncExp] = useState<any[]>([]);
+  let [income, setIncome] = useState<Float>(0);
+  let [expense, setExpense] = useState<Float>(0);
 
   let addDay = () => {
     let newDate = moment(currentDate).add(1, 'days').format();
@@ -35,28 +40,63 @@ function HomeScreen({navigation}: {navigation: any}) {
   }
 
   const getData = async () => {
+
+    let sumInc : Float = 0;
+    let sumExp : Float = 0;
+
     try {
       const value = await AsyncStorage.getItem('@incExp')
       if(value !== null) {
-        setIncExp(JSON.parse(value));
+        let data = JSON.parse(value);
+        setIncExp(data);
+        
+        for(let i = 0; i < data.length; i++) {
+
+          if(data[i].type == 'Income') {
+
+            sumInc += parseFloat(data[i].amount);
+
+          }
+
+          if(data[i].type == 'Expense') {
+
+            sumExp += parseFloat(data[i].amount);
+          }
+        }
+
         console.log('Done');
+        setIncome(sumInc);
+        setExpense(sumExp);
       }
     } catch(e) {
       console.log(e);
     }
   }
 
-  const swipeRight = (progress : any,dragX : any) =>{
+  const swipeRight = (progress : any, dragX : any, index: number, uuid : any) =>{
     const scale = dragX.interpolate({
       inputRange:[-200,0],
       outputRange:[1,0.5],
       extrapolate:'clamp'
     })
     return(
-      <Animated.View style={{backgroundColor:'#FD6868',width:"40%",justifyContent:'center', borderBottomColor: 'white', borderBottomWidth: 1}}>
-        <Animated.Text style={{marginLeft:'auto',marginRight:50, fontSize:15, fontWeight:'bold', color:'white', transform:[{scale}]}}>Delete</Animated.Text>
-      </Animated.View>
+      <TouchableOpacity style={{backgroundColor:'#FD6868',width:"40%",justifyContent:'center', borderBottomColor: 'white', borderBottomWidth: 1}} onPress={() => deleteIncExp(index, uuid)}>
+        <Animated.View>
+          <Animated.Text style={{marginLeft:'auto',marginRight:50, fontSize:15, fontWeight:'bold', color:'white', transform:[{scale}]}}>Delete</Animated.Text>
+        </Animated.View>
+      </TouchableOpacity>
     )
+  }
+
+
+  const deleteIncExp = async (index : number, uuid : any) => {
+
+    const newIncExp = incExp.filter((item, index) => item.id != uuid);
+    
+    console.log(newIncExp);
+    await AsyncStorage.setItem('@incExp', JSON.stringify(newIncExp));
+    swipeableRef.current?.[index].close();
+    getData();
   }
 
 useEffect(() => {
@@ -82,30 +122,31 @@ useEffect(() => {
           <View style={styles.section2}>
             <View style={[styles.section2_1, {backgroundColor: '#0FE38A', borderColor: '#0FE38A'}]}>
                 <Text style={styles.section2_1_1}>Income</Text>
-                <Text style={styles.section2_1_1}>10.00 $</Text>
+                <Text style={styles.section2_1_1}>{income.toFixed(2)} $</Text>
             </View>
             <View style={[styles.section2_1, {backgroundColor: '#FD6868', borderColor: '#FD6868'}]}>
                 <Text style={[styles.section2_1_1, {color: 'white'}]}>Expense</Text>
-                <Text style={[styles.section2_1_1, {color: 'white'}]}>10.00 $</Text>
+                <Text style={[styles.section2_1_1, {color: 'white'}]}>{expense.toFixed(2)} $</Text>
             </View>
             <View style={[styles.section2_1, {backgroundColor: '#FFFFFF', borderColor: '#FFFFFF'}]}>
                 <Text style={styles.section2_1_1}>Total</Text>
-                <Text style={styles.section2_1_1}>10.00 $</Text>
+                <Text style={styles.section2_1_1}>{(income - expense).toFixed(2)} $</Text>
             </View>
           </View>
 
           <View style={{marginTop: 20, borderBottomColor: 'white', borderBottomWidth: 1}}></View>
 
-          <ScrollView>
-
             {
               incExp.length > 0 ?
               <>
 
-              {
-                incExp.map(item => (
+              <ScrollView>
 
-                  <Swipeable key={item.id} renderRightActions={swipeRight} rightThreshold={-200}>
+              {
+                incExp.map((item, index) => (
+
+
+                  <Swipeable key={item.id} renderRightActions={(progress, dragX) => swipeRight(progress, dragX, index, item.id)} rightThreshold={-200} ref={(ref) => {if(ref) swipeableRef.current.push(ref)}}>
 
                   <View style={styles.section3}>
                     <View style={styles.section3_1}>
@@ -125,13 +166,19 @@ useEffect(() => {
                 ))
               }
 
+            </ScrollView>
+
               
               
               </>
-              : <Text>No Data Found!</Text>
+              : <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                  <MaterialIcons name="error-outline" color="white" size={35} />
+                  <Text style={{color: 'white', fontWeight: '700', marginTop: 5}}>No Data Found!</Text>
+              
+              </View>
             }
 
-          </ScrollView>
+          
 
           <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={() => navigation.navigate('Add')}>
             <MaterialIcons name="add" color="black" size={40} />
