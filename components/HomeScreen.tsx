@@ -122,15 +122,15 @@ useEffect(() => {
           <View style={styles.section2}>
             <View style={[styles.section2_1, {backgroundColor: '#0FE38A', borderColor: '#0FE38A'}]}>
                 <Text style={styles.section2_1_1}>Income</Text>
-                <Text style={styles.section2_1_1}>{income.toFixed(2)} $</Text>
+                <Text style={styles.section2_1_1}>{income.toFixed(2)} £</Text>
             </View>
             <View style={[styles.section2_1, {backgroundColor: '#FD6868', borderColor: '#FD6868'}]}>
                 <Text style={[styles.section2_1_1, {color: 'white'}]}>Expense</Text>
-                <Text style={[styles.section2_1_1, {color: 'white'}]}>{expense.toFixed(2)} $</Text>
+                <Text style={[styles.section2_1_1, {color: 'white'}]}>{expense.toFixed(2)} £</Text>
             </View>
             <View style={[styles.section2_1, {backgroundColor: '#FFFFFF', borderColor: '#FFFFFF'}]}>
                 <Text style={styles.section2_1_1}>Total</Text>
-                <Text style={styles.section2_1_1}>{(income - expense).toFixed(2)} $</Text>
+                <Text style={styles.section2_1_1}>{(income - expense).toFixed(2)} £</Text>
             </View>
           </View>
 
@@ -157,7 +157,7 @@ useEffect(() => {
                         <Text style={{color: 'white'}}>{item.accountType}</Text>
                     </View>
                     <View style={styles.section3_1}>
-                        <Text style={{color: item.type == 'Expense' ? '#FD6868' : '#0FE38A'}}>{item.amount} $</Text>
+                        <Text style={{color: item.type == 'Expense' ? '#FD6868' : '#0FE38A'}}>{item.amount} £</Text>
                     </View>
                   </View>
 
