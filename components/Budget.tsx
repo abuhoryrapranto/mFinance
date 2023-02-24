@@ -8,15 +8,54 @@ import {
     useColorScheme,
     View,
     TextInput,
+    Alert,
   } from 'react-native';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Float } from 'react-native/Libraries/Types/CodegenTypes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Budget({navigation}: {navigation: any}) {
 
     let [budget, setBudget] = useState<Float>(0);
+    let [saveBudget, setSaveBudget] = useState('');
+
+    const getBudget = async () => {
+
+        const data = await AsyncStorage.getItem('@budget');
+
+        if(data) {
+            setBudget(parseFloat(data));
+        }
+    }
+
+    const saveManualBudget = async () => {
+
+        try {
+
+            await AsyncStorage.setItem('@budget', saveBudget);
+
+            setBudget(parseFloat(saveBudget));
+
+            console.log('success');
+
+            Alert.alert('Budget saved successfully', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);
+
+            setSaveBudget('');
+
+        } catch(e) {
+            
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        getBudget();
+    }, []);
 
     return(
         <SafeAreaView>
@@ -32,11 +71,11 @@ function Budget({navigation}: {navigation: any}) {
                 <Text style={{color: 'white', fontSize: 15, marginTop: 20}}>Manually Select Budget (Monthly)</Text>
 
                 <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
-                    <TextInput style={styles.input} keyboardType='numeric'></TextInput>
+                    <TextInput style={styles.input} keyboardType='numeric' value={saveBudget} onChangeText={newValue => setSaveBudget(newValue)}></TextInput>
                 </View>
 
                 <View>
-                    <TouchableOpacity style={styles.saveBtn}>
+                    <TouchableOpacity style={styles.saveBtn} onPress={saveManualBudget}>
                         <Text style={{color: 'white', fontSize: 18, fontWeight: '700'}}>Save</Text>
                     </TouchableOpacity>
                 </View>
