@@ -8,34 +8,45 @@ import {
     useColorScheme,
     View,
   } from 'react-native';
-  
+
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-function Note({navigation}: {navigation: any}) {
+function More({navigation}: {navigation: any}) {
     return(
         <SafeAreaView>
             <View style={styles.container}>
+            <Text style={{color: 'white', fontSize: 18, textAlign: 'center'}}>More</Text>
             <View style={styles.section1}>
                     <View style={styles.section1_1}>
-                        <MaterialIcons name="atm" color='white' size={50} />
-                        <Text style={{color: 'white'}}>ATM</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Atm')}>
+                            <MaterialIcons name="atm" color='white' size={50} />
+                            <Text style={{color: 'white', textAlign: 'center'}}>ATM</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.section1_1}>
-                        <FontAwesome5 name="chart-line" color='white' size={50} />
-                        <Text style={{color: 'white'}}>Stocks</Text>
+                        <TouchableOpacity>
+                            <FontAwesome5 name="chart-line" color='white' size={50} />
+                            <Text style={{color: 'white', textAlign: 'center'}}>Stocks</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.section1_1}>
-                        <FontAwesome5 name="credit-card" color='white' size={50} />
-                        <Text style={{color: 'white'}}>Card</Text>
+                        <TouchableOpacity>
+                            <FontAwesome5 name="credit-card" color='white' size={50} />
+                            <Text style={{color: 'white', textAlign: 'center'}}>Card</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.section1_1}>
-                        <MaterialIcons name="feedback" color='white' size={50} />
-                        <Text style={{color: 'white'}}>Feedback</Text>
+                        <TouchableOpacity>
+                            <MaterialIcons name="feedback" color='white' size={50} />
+                            <Text style={{color: 'white', textAlign: 'center'}}>Feedback</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.section1_1}>
-                        <MaterialIcons name="settings-backup-restore" color='white' size={50} />
-                        <Text style={{color: 'white'}}>Feedback</Text>
+                        <TouchableOpacity>
+                            <MaterialIcons name="settings-backup-restore" color='white' size={50} />
+                            <Text style={{color: 'white', textAlign: 'center'}}>Backup</Text>
+                        </TouchableOpacity>
                     </View>
                   </View>
             </View>
@@ -59,14 +70,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: "space-between",
-        marginTop: 10,
     },
     
     section1_1: {
         width: '25%',
         alignItems: 'center',
-        paddingTop: 30
+        paddingTop: 20,
     },
 })
 
-export default Note;
+export default More;
