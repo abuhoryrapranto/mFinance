@@ -28,6 +28,7 @@ function HomeScreen({navigation}: {navigation: any}) {
   const [incExp, setIncExp] = useState<any[]>([]);
   let [income, setIncome] = useState<Float>(0);
   let [expense, setExpense] = useState<Float>(0);
+  const [cost, setCost] = useState<any[]>([]);
 
   let addDay = () => {
     let newDate = moment(currentDate).add(1, 'days').format();
@@ -39,39 +40,80 @@ function HomeScreen({navigation}: {navigation: any}) {
     setCurrentDate(newDate);
   }
 
-  const getData = async () => {
+  const getDataByDate = async () => {
 
     let sumInc : Float = 0;
     let sumExp : Float = 0;
 
     try {
+
       const value = await AsyncStorage.getItem('@incExp')
-      if(value !== null) {
-        let data = JSON.parse(value);
-        setIncExp(data);
-        
-        for(let i = 0; i < data.length; i++) {
 
-          if(data[i].type == 'Income') {
+      if(value) {
 
-            sumInc += parseFloat(data[i].amount);
+        const data : Array<any> = JSON.parse(value);
+        const filterData = data.filter(item => new Date(item.date).toDateString()  == new Date(currentDate).toDateString());
+        setIncExp(filterData);
+
+        filterData.map(item => {
+
+          if(item.type == 'Income') {
+
+            sumInc += parseFloat(item.amount);
 
           }
 
-          if(data[i].type == 'Expense') {
+          if(item.type == 'Expense') {
 
-            sumExp += parseFloat(data[i].amount);
+            sumExp += parseFloat(item.amount);
           }
-        }
 
-        console.log('Done');
+        })
+
         setIncome(sumInc);
         setExpense(sumExp);
       }
     } catch(e) {
-      console.log(e);
+        console.log(e);
     }
   }
+
+  // const getData = async () => {
+
+  //   let sumInc : Float = 0;
+  //   let sumExp : Float = 0;
+
+  //   try {
+  //     const value = await AsyncStorage.getItem('@incExp')
+  //     if(value !== null) {
+  //       let data = JSON.parse(value);
+  //       setIncExp(data);
+
+  //       // const filterData = incExp.filter(item => new Date(item.date).toDateString()  == new Date(currentDate).toDateString());
+  //       // console.log(typeof(data));
+        
+  //       for(let i = 0; i < data.length; i++) {
+
+  //         if(data[i].type == 'Income') {
+
+  //           sumInc += parseFloat(data[i].amount);
+
+  //         }
+
+  //         if(data[i].type == 'Expense') {
+
+  //           sumExp += parseFloat(data[i].amount);
+  //         }
+  //       }
+
+  //       console.log('Done');
+  //       setIncome(sumInc);
+  //       setExpense(sumExp);
+  //     }
+  //   } catch(e) {
+  //     console.log(e);
+  //   }
+  // }
 
   const swipeRight = (progress : any, dragX : any, index: number, uuid : any) =>{
     const scale = dragX.interpolate({
@@ -96,12 +138,14 @@ function HomeScreen({navigation}: {navigation: any}) {
     console.log(newIncExp);
     await AsyncStorage.setItem('@incExp', JSON.stringify(newIncExp));
     swipeableRef.current?.[index].close();
-    getData();
+    getDataByDate();
   }
 
 useEffect(() => {
-    getData();
-}, [isFocused]);
+
+   getDataByDate();
+}, [isFocused, currentDate]);
+
 
     return (
         <SafeAreaView style={styles.container}>

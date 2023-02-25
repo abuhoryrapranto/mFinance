@@ -8,8 +8,7 @@ import {
     useColorScheme,
     View,
   } from 'react-native';
-
-import Fontisto from 'react-native-vector-icons/Fontisto';
+  
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
