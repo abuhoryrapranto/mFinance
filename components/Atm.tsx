@@ -49,7 +49,7 @@ function Atm({navigation}: {navigation: any}) {
           
           <View style={styles.section1_2}>
             
-            <TouchableOpacity style={styles.mapBtn}>
+            <TouchableOpacity style={styles.mapBtn} onPress={() => navigation.navigate('Map')}>
                 <Text style={{color: 'white', fontWeight: '500'}}>Map View</Text>
             </TouchableOpacity>
           
