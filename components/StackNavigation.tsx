@@ -4,6 +4,7 @@ import Add from './Add';
 import Note from './Note';
 import Atm from './Atm';
 import Map from './Map';
+import Stock from './Stock';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ function StackNavigation() {
       <Stack.Screen name="Note" component={Note} />
       <Stack.Screen name="Atm" component={Atm} />
       <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen name="Stock" component={Stock} />
     </Stack.Navigator>
   );
 }
