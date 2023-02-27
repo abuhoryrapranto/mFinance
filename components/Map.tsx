@@ -15,15 +15,12 @@ import MapView, { Marker } from 'react-native-maps';
 
 const deviceHeight = Dimensions.get("window").height
 
-function Map({navigation}: {navigation: any}) {
-    return(
-        <SafeAreaView>
-            <View style={styles.container}>
-                <View style={styles.headSection}>
-                    <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
-                    <Text style={{fontSize: 17, color: "white"}}>Map</Text>
-                </View>
+function Map({route, navigation} : any) {
 
+    const { title, description, geoCode } = route.params;
+
+    return(
+            <View>
                 <MapView
                     style={styles.map}
                     initialRegion={{
@@ -33,15 +30,18 @@ function Map({navigation}: {navigation: any}) {
                     longitudeDelta: 0.0421,
                     }}
                 >
+                    <View style={styles.headSection}>
+                        <MaterialIcons name="arrow-back-ios" color="black" size={20} onPress={() => navigation.goBack()} />
+                        <Text style={{fontSize: 17, color: "black"}}>Map</Text>
+                    </View>
 
-                    <Marker coordinate = {{latitude: 52.47930326116376,longitude: -1.897928015467875}}
-                        pinColor = {"red"} // any color
-                        title={"title"}
-                        description={"description"}
+                    <Marker coordinate = {{latitude: geoCode.latitude,longitude: geoCode.longitude}}
+                        pinColor = {"red"}
+                        title={title}
+                        description={description}
                     />
                 </MapView>
             </View>
-        </SafeAreaView>
     );
 }
 
@@ -49,20 +49,23 @@ const styles = StyleSheet.create({
 
     container: {
         
-        ...StyleSheet.absoluteFillObject,
-        height: deviceHeight,
-        width: 420,
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
+        
     },
 
     headSection: {
         flexDirection: 'row',
         alignItems: 'center',
+        paddingTop: 50,
+        paddingLeft: 10,
+
     },
 
     map: {
         ...StyleSheet.absoluteFillObject,
+        height: deviceHeight,
+        width: 420,
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
     },
 })
 

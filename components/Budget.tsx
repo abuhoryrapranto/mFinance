@@ -53,6 +53,21 @@ function Budget({navigation}: {navigation: any}) {
         }
     }
 
+    const deleteBudget = async () => {
+
+        try {
+            await AsyncStorage.removeItem('@budget');
+            setBudget(0);
+            Alert.alert('Budget saved successfully', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);
+            
+          } catch(e) {
+                console.log(e);
+          }
+    }
+
     useEffect(() => {
         getBudget();
     }, []);
@@ -65,10 +80,15 @@ function Budget({navigation}: {navigation: any}) {
                     <Text style={{fontSize: 17, color: "white"}}>Budget</Text>
                 </View>
                 
-                <Text style={{color: 'white', fontSize: 17, fontWeight: '700', marginTop: 20}}>Your current month budget is: {budget.toFixed(2)} £</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+                    <Text style={{color: 'white', fontSize: 17, fontWeight: '700'}}>Your annual budget is: {budget.toFixed(2)} £</Text>
+                    <TouchableOpacity style={{flex: 1}} onPress={deleteBudget}>
+                        <Text style={{textAlign: 'right', fontSize: 17, color: '#FD6868'}}>Delete</Text>
+                    </TouchableOpacity>
+                </View>
 
                 
-                <Text style={{color: 'white', fontSize: 15, marginTop: 20}}>Manually Select Budget (Monthly)</Text>
+                <Text style={{color: 'white', fontSize: 15, marginTop: 20}}>Manually Select Budget (Annually)</Text>
 
                 <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
                     <TextInput style={styles.input} keyboardType='numeric' value={saveBudget} onChangeText={newValue => setSaveBudget(newValue)}></TextInput>
@@ -121,7 +141,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         padding: 13,
         alignItems: 'center',
-      },
+    },
 
       predictBtn: {
         borderColor: '#FD6868',
@@ -130,7 +150,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
         padding: 40,
         alignItems: 'center',
-      }
+    }
 })
 
 export default Budget;

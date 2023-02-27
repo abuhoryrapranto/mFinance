@@ -40,7 +40,7 @@ function Atm({navigation}: {navigation: any}) {
 
       //type ItemProps = {title: string};
 
-      const Item = ({bankName, streetName, city, postCode} : any) => (
+      const Item = ({bankName, streetName, city, postCode, geoCode} : any) => (
         <View style={styles.section1}>
             <View  style={styles.section1_1}>
                 <Text style={{color: '#0FE38A', fontSize: 16, fontWeight: '500'}}>{bankName}</Text>
@@ -49,7 +49,7 @@ function Atm({navigation}: {navigation: any}) {
           
           <View style={styles.section1_2}>
             
-            <TouchableOpacity style={styles.mapBtn} onPress={() => navigation.navigate('Map')}>
+            <TouchableOpacity style={styles.mapBtn} onPress={() => navigation.navigate('Map', {title: bankName, description: streetName, geoCode: geoCode})}>
                 <Text style={{color: 'white', fontWeight: '500'}}>Map View</Text>
             </TouchableOpacity>
           
@@ -68,7 +68,7 @@ function Atm({navigation}: {navigation: any}) {
                 <View>
                     <FlatList
                     data={atm}
-                    renderItem={({item}) => <Item bankName={item.bank.name} streetName={item.address.streetName} city={item.address.city} postCode={item.address.postCode} />}
+                    renderItem={({item}) => <Item bankName={item.bank.name} streetName={item.address.streetName} city={item.address.city} postCode={item.address.postCode} geoCode={item.address.geoLocation} />}
                     keyExtractor={item => item._id}
                     >
 
