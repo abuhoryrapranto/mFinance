@@ -38,8 +38,6 @@ function Atm({navigation}: {navigation: any}) {
         
      }, []);
 
-      //type ItemProps = {title: string};
-
       const Item = ({bankName, streetName, city, postCode, geoCode} : any) => (
         <View style={styles.section1}>
             <View  style={styles.section1_1}>

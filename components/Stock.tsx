@@ -16,6 +16,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 function Stock({navigation}: {navigation: any}) {
 
     const [stock, setStock] = useState<any[]>([]);
+    let [loading, setLoading] = useState(1);
 
       const getAllAtms = async () => {
         try {
@@ -31,6 +32,8 @@ function Stock({navigation}: {navigation: any}) {
           const data = await response.json();
 
           setStock(data);
+
+          setLoading(0);
 
         } catch (error) {
 
@@ -63,6 +66,7 @@ function Stock({navigation}: {navigation: any}) {
                     <ScrollView>
 
                         {
+                            loading === 0 ? 
                             stock.length > 0 ?
                             <>
                             {
@@ -77,6 +81,10 @@ function Stock({navigation}: {navigation: any}) {
                             }
                             </> :
                             <Text>No Data Found!</Text>
+
+                            :   <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 30}}>
+                                    <Text style={{color: 'white', fontSize: 20, fontWeight: '500'}}>Loading...</Text>
+                                </View>
                         }
                         
                     </ScrollView>
