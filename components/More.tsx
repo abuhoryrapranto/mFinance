@@ -31,7 +31,7 @@ function More({navigation}: {navigation: any}) {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.section1_1}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Card')}>
                             <FontAwesome5 name="credit-card" color='white' size={50} />
                             <Text style={{color: 'white', textAlign: 'center'}}>Card</Text>
                         </TouchableOpacity>

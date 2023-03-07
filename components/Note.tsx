@@ -82,6 +82,16 @@ function Note({navigation}: {navigation: any}) {
         }
     }
 
+    const deleteNote = async (uuid : any) => {
+
+        const newMyNote = myNote.filter((item, index) => item.id != uuid);
+        
+        await AsyncStorage.setItem('@note', JSON.stringify(newMyNote));
+
+        getNotes();
+
+      }
+
     useEffect(() => {
 
         getNotes();
@@ -104,7 +114,7 @@ function Note({navigation}: {navigation: any}) {
                             <View style={{flexDirection: 'row',  paddingTop: 15}}>
                                 <FontAwesome name="dot-circle-o" color="white" size={15} />
                                 <Text style={{color: 'white', fontSize: 16, paddingLeft: 5}}>{item.note}</Text>
-                                <TouchableOpacity style={{flex: 1}}>
+                                <TouchableOpacity style={{flex: 1}} onPress={() => deleteNote(item.id)}>
                                     <Text style={{textAlign: 'right', color: '#FD6868', fontSize: 16}}>Delete</Text>
                                 </TouchableOpacity>
                             </View>
