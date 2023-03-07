@@ -6,6 +6,7 @@ import Atm from './Atm';
 import Map from './Map';
 import Stock from './Stock';
 import Card from './Card';
+import AddCard from './AddCard';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ function StackNavigation() {
       <Stack.Screen name="Map" component={Map} />
       <Stack.Screen name="Stock" component={Stock} />
       <Stack.Screen name="Card" component={Card} />
+      <Stack.Screen name="AddCard" component={AddCard} />
     </Stack.Navigator>
   );
 }

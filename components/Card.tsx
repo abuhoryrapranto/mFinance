@@ -48,7 +48,7 @@ function Card({navigation}: {navigation: any}) {
                         <Text style={{fontSize: 17, color: "white"}}>Card</Text>
                     </View>
 
-                    <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 10, marginTop: 20, width: '100%'}}>
+                    <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 10, marginTop: 20, width: '100%'}} onPress={() => navigation.navigate('AddCard')} >
                         <Text style={{color: 'white', textAlign: 'center', fontSize: 17, fontWeight: '500'}}>Add</Text>
                     </TouchableOpacity>
 
@@ -57,7 +57,8 @@ function Card({navigation}: {navigation: any}) {
                             data={DATA}
                             renderItem={({item}) => 
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
-                                    <Text style={styles.cardText}>{item.cType}</Text> 
+                                    
+                                    <Text style={[styles.cardText, {textAlign: 'left'}]}><FontAwesome name={item.cType == 'VISA' ? 'cc-visa' : 'cc-mastercard'} color="white" size={20}/> {item.cType}</Text> 
                                     <Text style={[styles.cardText, {textAlign: 'right'}]}>{item.cNum.replace(/\d(?=\d{4})/g, "*")}</Text> 
                                 </View>
                             }
@@ -87,11 +88,11 @@ const styles = StyleSheet.create({
     },
 
     cardText: {
-        width: '50%',
+        width: '33%',
         color: 'white',
         fontSize: 15,
         fontWeight: '500',
-        paddingTop: 10,
+        paddingTop: 15,
     },
 
 })
