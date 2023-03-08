@@ -21,22 +21,34 @@ function Card({navigation}: {navigation: any}) {
 
     const isFocused = useIsFocused();
 
-    const DATA = [
-        {
-            id: 1,
-            cType: 'VISA',
-            cNum: '7489745123345671'
-        },
-        {
-            id: 2,
-            cType: 'Master Card',
-            cNum: '4671894653412389'
+    const [card, setCard] = useState<any[]>([]);
+
+    const getCards = async () => {
+
+        try {
+
+            const cardData = await AsyncStorage.getItem('@card');
+
+            if(cardData !== null) {
+                
+                const parseData = JSON.parse(cardData);
+                setCard(parseData);
+
+            } else {
+
+                console.log("No data found!");
+            }
+
+        } catch(e) {
+
+            console.log(e);
         }
-    ]
+    }
 
     useEffect(() => {
 
-        
+        getCards();
+
      }, [isFocused]);
 
     return(
@@ -54,7 +66,7 @@ function Card({navigation}: {navigation: any}) {
 
                     <View style={{marginTop: 20}}>
                         <FlatList
-                            data={DATA}
+                            data={card}
                             renderItem={({item}) => 
                                 <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
                                     

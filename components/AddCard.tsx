@@ -11,6 +11,7 @@ import {
     TextInput,
     FlatList,
     Dimensions,
+    Alert,
   } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,6 +26,120 @@ function AddCard({navigation}: {navigation: any}) {
     const [cxm, setCxm] = useState("");
     const [cxy, setCxy] = useState("");
     const [cvc, setCvc] = useState("");
+
+
+    const saveCard = async () => {
+
+        if(cType == '') {
+
+            Alert.alert('Card type can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);
+        }
+
+        else if(cName == '') {
+            
+            Alert.alert('Card holder name can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);
+
+        } 
+
+        else if(cNum == '') {
+            
+            Alert.alert('Card number can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);
+
+        }
+
+        else if(cxm == '') {
+            
+            Alert.alert('Card expiry month can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);
+
+        }
+        
+        else if(cxy == '') {
+            
+            Alert.alert('Card expiry year can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);
+
+        }
+
+        else if(cvc == '') {
+
+            Alert.alert('CVC can not be empty', '', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);
+
+        }
+
+        else {
+
+            if(cNum.length > 16 || cNum.length < 16) {
+
+                Alert.alert('Card Number length can not be more/less than 16', '', [
+                    
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ]);
+    
+            }
+
+            else if(cvc.length > 3 || cvc.length < 3) {
+
+                Alert.alert('CVC length can not be more/less than 3', '', [
+                    
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ]);
+    
+            }
+
+            let cardData : any = {
+                id: uuid.v4(),
+                cType: cType,
+                cNum: cNum,
+                cName: cName,
+                cxm: cxm,
+                cxy: cxy,
+                cvc: cvc
+            }
+    
+            try {
+    
+                const data = await AsyncStorage.getItem('@card');
+    
+                if(data !== null) {
+    
+                    let parseCard = JSON.parse(data);
+                    parseCard.push(cardData);
+    
+                    await AsyncStorage.setItem('@card', JSON.stringify(parseCard));
+    
+                } else {
+    
+                    await AsyncStorage.setItem('@card', JSON.stringify([cardData]));
+                }
+    
+                console.log('success');
+
+                navigation.navigate('Card');
+    
+            } catch(e) {
+    
+                console.log(e);
+            }
+
+        }
+    }
 
     useEffect(() => {
 
@@ -59,7 +174,7 @@ function AddCard({navigation}: {navigation: any}) {
 
                     <View style={{marginTop: 20}}>
                         <Text style={{color: 'white', fontSize: 15, width: '100%'}}>Card Number</Text>
-                        <TextInput style={styles.input} value={cNum} onChangeText={value => setCtype(value)}></TextInput>
+                        <TextInput style={styles.input} keyboardType='numeric' value={cNum} onChangeText={value => setCnum(value)}></TextInput>
                     </View>
 
                     <View style={{marginTop: 20}}>
@@ -111,7 +226,7 @@ function AddCard({navigation}: {navigation: any}) {
                         <TextInput style={styles.input} value={cvc} onChangeText={value => setCvc(value)}></TextInput>
                     </View>
 
-                    <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 10, marginTop: 30, width: '100%'}} onPress={() => navigation.navigate('AddCard')} >
+                    <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 10, marginTop: 30, width: '100%'}} onPress={saveCard} >
                         <Text style={{color: 'white', textAlign: 'center', fontSize: 17, fontWeight: '500'}}>Save</Text>
                     </TouchableOpacity>
 
