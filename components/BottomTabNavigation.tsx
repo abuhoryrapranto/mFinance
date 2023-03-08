@@ -4,6 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HomeScreen from '../components/HomeScreen';
 import Budget from './Budget';
 import More from './More';
+import Chart from './Chart';
 
 
 import {
@@ -83,7 +84,7 @@ function BottomTabNavigation() {
                 }
                 
                 />
-                <Tab.Screen name="Chart" component={HomeScreen} 
+                <Tab.Screen name="Chart" component={Chart} 
                 
                 options={({route}) => ({
 
