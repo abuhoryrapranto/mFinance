@@ -52,10 +52,30 @@ function HomeScreen({navigation}: {navigation: any}) {
       if(value) {
 
         const data : Array<any> = JSON.parse(value);
-        const filterData = data.filter(item => new Date(item.date).toDateString()  == new Date(currentDate).toDateString());
+
+        let filterData : any;
+        
+        if(borderColor == 1) {
+
+          filterData = data.filter(item => new Date(item.date).toDateString()  == new Date(currentDate).toDateString());
+
+        } else if(borderColor == 2) {
+
+          filterData = data.filter(item => moment(item.date).week()  == moment(new Date(currentDate)).week() && moment(item.date).year() == moment(new Date(currentDate)).year());
+
+        } else if(borderColor == 3) {
+
+          filterData = data.filter(item => moment(item.date).month()  == moment(new Date(currentDate)).month() && moment(item.date).year() == moment(new Date(currentDate)).year());
+
+        } else {
+
+          filterData = data.filter(item => new Date(item.date).toDateString()  == new Date(currentDate).toDateString());
+        }
+
+        
         setIncExp(filterData);
 
-        filterData.map(item => {
+        filterData.map((item : any) => {
 
           if(item.type == 'Income') {
 
@@ -77,43 +97,6 @@ function HomeScreen({navigation}: {navigation: any}) {
         console.log(e);
     }
   }
-
-  // const getData = async () => {
-
-  //   let sumInc : Float = 0;
-  //   let sumExp : Float = 0;
-
-  //   try {
-  //     const value = await AsyncStorage.getItem('@incExp')
-  //     if(value !== null) {
-  //       let data = JSON.parse(value);
-  //       setIncExp(data);
-
-  //       // const filterData = incExp.filter(item => new Date(item.date).toDateString()  == new Date(currentDate).toDateString());
-  //       // console.log(typeof(data));
-        
-  //       for(let i = 0; i < data.length; i++) {
-
-  //         if(data[i].type == 'Income') {
-
-  //           sumInc += parseFloat(data[i].amount);
-
-  //         }
-
-  //         if(data[i].type == 'Expense') {
-
-  //           sumExp += parseFloat(data[i].amount);
-  //         }
-  //       }
-
-  //       console.log('Done');
-  //       setIncome(sumInc);
-  //       setExpense(sumExp);
-  //     }
-  //   } catch(e) {
-  //     console.log(e);
-  //   }
-  // }
 
   const swipeRight = (progress : any, dragX : any, index: number, uuid : any) =>{
     const scale = dragX.interpolate({
@@ -144,7 +127,7 @@ function HomeScreen({navigation}: {navigation: any}) {
 useEffect(() => {
 
    getDataByDate();
-}, [isFocused, currentDate]);
+}, [isFocused, currentDate, borderColor]);
 
 
     return (
