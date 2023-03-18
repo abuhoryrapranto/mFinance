@@ -15,8 +15,11 @@ import React, { useState, useEffect } from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 function Budget({navigation}: {navigation: any}) {
+
+    const isFocused = useIsFocused();
 
     let [budget, setBudget] = useState<Float>(0);
     let [saveBudget, setSaveBudget] = useState('');
@@ -69,8 +72,10 @@ function Budget({navigation}: {navigation: any}) {
     }
 
     useEffect(() => {
+
         getBudget();
-    }, []);
+         
+    }, [isFocused]);
 
     return(
         <SafeAreaView>
@@ -101,7 +106,7 @@ function Budget({navigation}: {navigation: any}) {
                 </View>
 
                 <View>
-                    <TouchableOpacity style={styles.predictBtn}>
+                    <TouchableOpacity style={styles.predictBtn} onPress={() => navigation.navigate('Predict')}>
                     <Text style={{color: 'white', fontSize: 17}}>Predict Your Expense Budget With</Text>
                         <Text style={{color: 'white', fontSize: 20, fontWeight: '700', paddingTop: 10}}>AI</Text>
                     </TouchableOpacity>

@@ -7,6 +7,7 @@ import Map from './Map';
 import Stock from './Stock';
 import Card from './Card';
 import AddCard from './AddCard';
+import Predict from './Predict';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ function StackNavigation() {
       <Stack.Screen name="Stock" component={Stock} />
       <Stack.Screen name="Card" component={Card} />
       <Stack.Screen name="AddCard" component={AddCard} />
+      <Stack.Screen name="Predict" component={Predict} />
     </Stack.Navigator>
   );
 }

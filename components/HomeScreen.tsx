@@ -184,7 +184,7 @@ useEffect(() => {
                         <Text style={{color: 'white'}}>{item.accountType}</Text>
                     </View>
                     <View style={styles.section3_1}>
-                        <Text style={{color: item.type == 'Expense' ? '#FD6868' : '#0FE38A'}}>{item.amount} £</Text>
+                        <Text style={{color: item.type == 'Expense' ? '#FD6868' : '#0FE38A'}}>£{item.amount}</Text>
                     </View>
                   </View>
 
