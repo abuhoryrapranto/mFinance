@@ -36,6 +36,7 @@ function BottomTabNavigation() {
                 headerShown: false,
                 tabBarStyle:{
                 backgroundColor: "#333333",
+                marginBottom: 2,
                 },
                 }}
                 

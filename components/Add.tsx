@@ -166,23 +166,6 @@ function Add({navigation}: {navigation: any}) {
         console.log('Done.')
       }
 
-    // const getData = async () => {
-    //     try {
-    //       const value = await AsyncStorage.getItem('@incExp')
-    //       if(value !== null) {
-    //         console.log(JSON.parse(value));
-    //       }
-    //     } catch(e) {
-    //       console.log(e);
-    //     }
-    //   }
-
-    // useEffect(() => {
-    //     getData();
-    // }, []);
-
-
-
     return(
         <SafeAreaView>
             <KeyboardAvoidingView>

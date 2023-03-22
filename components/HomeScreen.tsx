@@ -11,7 +11,7 @@ import {
     Alert,
   } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-import moment from 'moment'
+import moment from 'moment';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';

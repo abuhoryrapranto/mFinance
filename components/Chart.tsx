@@ -1,32 +1,55 @@
 import React, { useState, useEffect } from 'react';  
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
-    TouchableOpacity,
-    useColorScheme,
     View,
-    TextInput,
-    FlatList,
     Dimensions,
   } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
-import {
-    LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
-} from "react-native-chart-kit";
+import { LineChart, PieChart } from "react-native-chart-kit";
+import moment from 'moment';
+const _ = require('lodash');
 
 function Chart({navigation}: {navigation: any}) {
 
     const isFocused = useIsFocused();
+
+    let [expenses, setExpenses] = useState<any[]>([]);
+    let [months, setMonths] = useState<any[]>([]);
+
+    const monthlyExpense = async() => {
+
+        try {
+
+                const value = await AsyncStorage.getItem('@incExp');
+
+                let mnt : Array<any> = [];
+                let exp : Array<any> = [];
+
+                if(value !== null) {
+
+                    const data : Array<any> = JSON.parse(value);
+                    const filterData = data.filter(item => item.type == 'Expense');
+                    const groupedData = _(filterData).groupBy( ({date} : any) => new Date(date).getMonth())
+                                        .map((item : any, key : any) => {
+                                            mnt.push(moment.monthsShort(Number(key)))
+                                            exp.push(_.sumBy(item, (value : any) => Number(value.amount)))
+                                            
+                                        })
+                                        .value();
+                    setMonths(mnt);
+                    setExpenses(exp);
+                }
+
+            } catch(e) {
+
+                console.log(e);
+            }
+
+    }
 
     const data = [
         {
@@ -46,6 +69,8 @@ function Chart({navigation}: {navigation: any}) {
       ];
 
     useEffect(() => {
+
+        monthlyExpense()
         
      }, [isFocused]);
 
@@ -65,25 +90,17 @@ function Chart({navigation}: {navigation: any}) {
 
                     <LineChart
                     data={{
-                    labels: ["Jan", "Mar", "May", "Jul", "Aug", "Oct", "Dec"],
+                    labels: months,
                     datasets: [
                         {
-                        data: [
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                        ]
+                        data: expenses,
                         }
                     ]
                     }}
                     width={Dimensions.get("window").width} // from react-native
                     height={220}
-                    yAxisLabel="$"
-                    yAxisSuffix="k"
+                    yAxisLabel="£"
+                    // yAxisSuffix="k"
                     yAxisInterval={1} // optional, defaults to 1
                     chartConfig={{
                     backgroundColor: "#e26a00",
