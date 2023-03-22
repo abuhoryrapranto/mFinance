@@ -216,6 +216,7 @@ function Add({navigation}: {navigation: any}) {
                     <RNPickerSelect style={pickerSelectStyles}
                         value={category}
                         onValueChange={(value) => setCategory(value)}
+                        useNativeAndroidPickerStyle={false}
                         items={tabChange === 1 ? categoryExpense : categoryIncome}
                     />
                 </View>
@@ -224,6 +225,7 @@ function Add({navigation}: {navigation: any}) {
                     <Text style={{color: 'white', fontSize: 15, width: 100}}>Account Type</Text>
                     <RNPickerSelect style={pickerSelectStyles}
                         value={accountType}
+                        useNativeAndroidPickerStyle={false}
                         onValueChange={(value) => setAccountType(value)}
                         items={[
                             { label: 'Cash', value: 'Cash' },
@@ -272,6 +274,7 @@ const styles = StyleSheet.create({
     headSection: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: 5,
       },
     
     input: {
@@ -327,6 +330,16 @@ const pickerSelectStyles = StyleSheet.create({
         borderRadius: 5,
         color: 'white',
         width: Dimensions.get('window').width / 1.45
+    },
+    inputAndroid: {
+        borderWidth: 1,
+        paddingTop: 3,
+        paddingLeft: 10,
+        paddingBottom: 3,
+        borderColor: 'white',
+        borderRadius: 5,
+        color: 'white',
+        width: Dimensions.get('window').width / 1.41
     },
 });
 

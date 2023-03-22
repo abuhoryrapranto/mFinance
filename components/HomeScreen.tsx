@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     padding: 3,
     textAlign: 'center',
+    textAlignVertical: 'center',
     color: 'white',
   },
 

@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
     headSection: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: 5,
     },
 
     input: {

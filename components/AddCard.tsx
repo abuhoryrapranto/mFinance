@@ -184,6 +184,7 @@ function AddCard({navigation}: {navigation: any}) {
                                 <Text style={{color: 'white'}}>Month</Text>
                                 <RNPickerSelect style={pickerSelectStyles2}
                                     value={cxm}
+                                    useNativeAndroidPickerStyle={false}
                                     onValueChange={(value) => setCxm(value)}
                                     items={[
                                         { label: '01', value: '01' },
@@ -205,6 +206,7 @@ function AddCard({navigation}: {navigation: any}) {
                                 <Text style={{color: 'white'}}>Year</Text>
                                 <RNPickerSelect style={pickerSelectStyles2}
                                     value={cxy}
+                                    useNativeAndroidPickerStyle={false}
                                     onValueChange={(value) => setCxy(value)}
                                     items={[
                                         { label: '23', value: '23' },
@@ -247,6 +249,7 @@ const styles = StyleSheet.create({
     headSection: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: 5,
     },
 
     input: {
@@ -283,7 +286,16 @@ const pickerSelectStyles2 = StyleSheet.create({
         color: 'white',
         marginTop: 5,
         paddingLeft: 5,
-    }
+    },
+    inputAndroid: {
+        borderWidth: 1,
+        paddingTop: 3,
+        paddingLeft: 10,
+        paddingBottom: 3,
+        borderColor: 'white',
+        borderRadius: 5,
+        color: 'white',
+    },
 });
 
 export default AddCard;

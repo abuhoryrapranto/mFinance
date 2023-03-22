@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginLeft: 10,
         marginRight: 10,
+        marginTop: 5,
     },
 
     section1: {
