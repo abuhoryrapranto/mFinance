@@ -37,7 +37,7 @@ function More({navigation}: {navigation: any}) {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.section1_1}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Feedback')}>
                             <MaterialIcons name="feedback" color='white' size={50} />
                             <Text style={{color: 'white', textAlign: 'center'}}>Feedback</Text>
                         </TouchableOpacity>
