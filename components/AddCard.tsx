@@ -156,9 +156,10 @@ function AddCard({navigation}: {navigation: any}) {
                     </View>
 
                     <View style={{marginTop: 20}}>
-                        <Text style={{color: 'white', fontSize: 15, width: '100%'}}>Card Type</Text>
+                        <Text style={{color: 'white', fontSize: 15, width: '100%', paddingBottom: 5}}>Card Type</Text>
                         <RNPickerSelect style={pickerSelectStyles}
                             value={cType}
+                            useNativeAndroidPickerStyle={false}
                             onValueChange={(value) => setCtype(value)}
                             items={[
                                 { label: 'VISA', value: 'VISA' },
@@ -273,7 +274,17 @@ const pickerSelectStyles = StyleSheet.create({
         color: 'white',
         marginTop: 5,
         paddingLeft: 5,
-    }
+    },
+
+    inputAndroid: {
+        borderWidth: 1,
+        paddingTop: 3,
+        paddingLeft: 10,
+        paddingBottom: 3,
+        borderColor: 'white',
+        borderRadius: 5,
+        color: 'white',
+    },
 });
 
 const pickerSelectStyles2 = StyleSheet.create({
