@@ -38,6 +38,7 @@ function Atm({navigation}: {navigation: any}) {
       const searchAtm = () => {
 
         if(search.length > 0) {
+          
           const keyWord = search.replace(/\s/g,'');
 
           const modifiedKeyWord = [keyWord.slice(0, 2), keyWord.replace(/\s/g,'').slice(2)].join(' ');
