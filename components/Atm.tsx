@@ -8,6 +8,8 @@ import {
     useColorScheme,
     View,
     FlatList,
+    TextInput,
+    Alert,
   } from 'react-native';
 
 import React, { useState, useEffect } from 'react';
@@ -16,6 +18,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 function Atm({navigation}: {navigation: any}) {
 
     const [atm, setAtm] = useState<any[]>([]);
+    const [search, setSearch] = useState('');
 
       const getAllAtms = async () => {
         try {
@@ -31,6 +34,30 @@ function Atm({navigation}: {navigation: any}) {
           console.error(error);
         }
       };
+
+      const searchAtm = () => {
+
+        if(search.length > 0) {
+          const keyWord = search.replace(/\s/g,'');
+
+          const modifiedKeyWord = [keyWord.slice(0, 2), keyWord.replace(/\s/g,'').slice(2)].join(' ');
+
+          let result = atm.filter(item => item.address.postCode.toUpperCase() == modifiedKeyWord.toUpperCase());
+
+          if(result.length > 0) {
+
+            setAtm(result);
+
+          } else {
+
+            Alert.alert('No ATM Found', 'Sorry!', [
+                  
+              {text: 'OK', onPress: getAllAtms},
+            ]);
+
+          }
+          }
+      }
 
       useEffect(() => {
 
@@ -64,13 +91,27 @@ function Atm({navigation}: {navigation: any}) {
                 </View>
 
                 <View>
-                    <FlatList
-                    data={atm}
-                    renderItem={({item}) => <Item bankName={item.bank.name} streetName={item.address.streetName} city={item.address.city} postCode={item.address.postCode} geoCode={item.address.geoLocation} />}
-                    keyExtractor={item => item._id}
-                    >
+                    {
+                      atm.length > 0 ? 
+                      <>
 
-                    </FlatList>
+                    <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'center', padding: 10}}>
+                      <TextInput style={styles.input} value={search} onChangeText={newNote => setSearch(newNote)} placeholder="Search (Ex: B8 1PE)" placeholderTextColor="white" onSubmitEditing={searchAtm}></TextInput>
+                    </View>
+
+                    <FlatList
+                      data={atm}
+                      renderItem={({item}) => <Item bankName={item.bank.name} streetName={item.address.streetName} city={item.address.city} postCode={item.address.postCode} geoCode={item.address.geoLocation} />}
+                      keyExtractor={item => item._id}
+                    >
+  
+                      </FlatList>
+                      
+                      </>
+                       :
+
+                      <Text style={{color: 'white', fontSize: 17, textAlign: 'center', marginTop: 20}}>Loading...</Text>
+                    }
                 </View>
             </View>
         </SafeAreaView>
@@ -119,6 +160,16 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
     },
+
+    input: {
+      flex: 1,
+      height: 35,
+      borderWidth: 1,
+      padding: 10,
+      borderColor: 'white',
+      borderRadius: 5,
+      color: 'white',
+  },
 })
 
 export default Atm;

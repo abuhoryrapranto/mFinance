@@ -1,13 +1,11 @@
 import {
     SafeAreaView,
     ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
-    TouchableOpacity,
-    useColorScheme,
     View,
-    FlatList,
+    TextInput,
+    Alert,
   } from 'react-native';
 
 import React, { useState, useEffect } from 'react';
@@ -17,8 +15,12 @@ function Stock({navigation}: {navigation: any}) {
 
     const [stock, setStock] = useState<any[]>([]);
     let [loading, setLoading] = useState(1);
+    const [search, setSearch] = useState('');
 
-      const getAllAtms = async () => {
+      const getAllStocks = async () => {
+
+        setLoading(1);
+
         try {
           const response = await fetch(
             'https://latest-stock-price.p.rapidapi.com/any', {
@@ -41,9 +43,33 @@ function Stock({navigation}: {navigation: any}) {
         }
       };
 
+      const searchStocks = () => {
+
+        if(search.length > 0) {
+
+            const keyWord = search.replace(/\s/g,'');
+
+            let result = stock.filter(item => item.symbol.replace(/\s/g,'').toUpperCase() == keyWord.toUpperCase());
+
+            if(result.length > 0) {
+
+            setStock(result);
+
+            } else {
+
+            Alert.alert('No Stocks Found', 'Sorry!', [
+                    
+                {text: 'OK', onPress: getAllStocks},
+            ]);
+
+            }
+
+        }
+      }
+
       useEffect(() => {
 
-        getAllAtms();
+        getAllStocks();
         
      }, []);
 
@@ -56,13 +82,28 @@ function Stock({navigation}: {navigation: any}) {
                     <Text style={{fontSize: 17, color: "white"}}>Stock</Text>
                 </View>
 
-                
+
+                {
+                    stock.length > 0 ?
+
+                    <>
+
+                    <View style={{marginTop: 10, flexDirection: 'row', alignItems: 'center', padding: 10}}>
+                        <TextInput style={styles.input} value={search} onChangeText={newNote => setSearch(newNote)} placeholder="Search (Ex: TRENT)" placeholderTextColor="white" onSubmitEditing={searchStocks}></TextInput>
+                    </View>
+
                     <View style={styles.section1}>
                         <Text style={styles.section1_1}>Symbol</Text>
                         <Text style={styles.section1_1}>Last Price</Text>
                         <Text style={styles.section1_1}>Change</Text>
                         <Text style={styles.section1_1}>% Change</Text>
                     </View>
+                    
+                    </>
+
+                    :
+                    ""
+                }
                     <ScrollView>
 
                         {
@@ -143,6 +184,16 @@ const styles = StyleSheet.create({
         color: 'white',
         paddingLeft: 10,
         paddingRight: 10
+    },
+
+    input: {
+        flex: 1,
+        height: 35,
+        borderWidth: 1,
+        padding: 10,
+        borderColor: 'white',
+        borderRadius: 5,
+        color: 'white',
     },
     
 })
