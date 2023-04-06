@@ -21,6 +21,23 @@ function Chart({navigation}: {navigation: any}) {
     let [months, setMonths] = useState<any[]>([]);
     let [pieData, setPieData] = useState<any[]>([]);
 
+    const dataManually = [
+        {
+          name: 'Income',
+          population: 0,
+          color: "#0FE38A",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        },
+        {
+          name: "Expense",
+          population: 0,
+          color: "#FD6868",
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 15
+        }
+      ];
+
     const monthlyExpense = async() => {
 
         try {
@@ -100,10 +117,10 @@ function Chart({navigation}: {navigation: any}) {
                         }}
                         data={
                             {
-                                labels: months,
+                                labels: months.length > 0 ? months : ['Jan', 'Mar', 'May', 'Jul', 'Sep', 'Nov'],
                                 datasets: [
                                     {
-                                    data: expenses
+                                    data: expenses.length > 0 ? expenses : [0,0,0,0,0,0]
                                     }
                                 ]
                             }
@@ -133,7 +150,7 @@ function Chart({navigation}: {navigation: any}) {
                 <View style={{marginTop: 30}}>
                 <Text style={{textAlign: 'center', color: 'white', fontSize: 17}}>Income & Expense ({moment().format('MMMM')})</Text>
                     <PieChart
-                    data={pieData}
+                    data={pieData.length > 0 ? pieData : dataManually}
                     width={Dimensions.get("window").width}
                     height={220}
                     chartConfig={{

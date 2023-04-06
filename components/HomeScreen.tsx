@@ -1,11 +1,9 @@
 import {
     SafeAreaView,
     ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
     TouchableOpacity,
-    useColorScheme,
     View,
     Animated,
     Alert,
@@ -172,23 +170,24 @@ useEffect(() => {
               {
                 incExp.map((item, index) => (
 
+                  <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Edit', {id: item.id, type: item.type, date: item.date, amount: item.amount, category: item.category, accountType: item.accountType, note: item.note})}>
+                    <Swipeable renderRightActions={(progress, dragX) => swipeRight(progress, dragX, index, item.id)} rightThreshold={-200} ref={(ref) => {if(ref) swipeableRef.current.push(ref)}}>
 
-                  <Swipeable key={item.id} renderRightActions={(progress, dragX) => swipeRight(progress, dragX, index, item.id)} rightThreshold={-200} ref={(ref) => {if(ref) swipeableRef.current.push(ref)}}>
+                    <View style={styles.section3}>
+                      <View style={styles.section3_1}>
+                          <Text style={{color: 'white'}}>{item.category}</Text>
+                      </View>
+                      <View style={styles.section3_1}>
+                          <Text style={{color: 'white', fontWeight: '700'}}>{item.note != '' ? item.note : 'No Descr.' }</Text>
+                          <Text style={{color: 'white'}}>{item.accountType}</Text>
+                      </View>
+                      <View style={styles.section3_1}>
+                          <Text style={{color: item.type == 'Expense' ? '#FD6868' : '#0FE38A'}}>£{item.amount}</Text>
+                      </View>
+                    </View>
 
-                  <View style={styles.section3}>
-                    <View style={styles.section3_1}>
-                        <Text style={{color: 'white'}}>{item.category}</Text>
-                    </View>
-                    <View style={styles.section3_1}>
-                        <Text style={{color: 'white', fontWeight: '700'}}>{item.note != '' ? item.note : 'No Descr.' }</Text>
-                        <Text style={{color: 'white'}}>{item.accountType}</Text>
-                    </View>
-                    <View style={styles.section3_1}>
-                        <Text style={{color: item.type == 'Expense' ? '#FD6868' : '#0FE38A'}}>£{item.amount}</Text>
-                    </View>
-                  </View>
-
-                  </Swipeable>
+                    </Swipeable>
+                  </TouchableOpacity>
 
                 ))
               }

@@ -101,43 +101,45 @@ function AddCard({navigation}: {navigation: any}) {
                     {text: 'OK', onPress: () => console.log('OK Pressed')},
                 ]);
     
-            }
+            } 
+            else {
 
-            let cardData : any = {
-                id: uuid.v4(),
-                cType: cType,
-                cNum: cNum,
-                cName: cName,
-                cxm: cxm,
-                cxy: cxy,
-                cvc: cvc
-            }
-    
-            try {
-    
-                const data = await AsyncStorage.getItem('@card');
-    
-                if(data !== null) {
-    
-                    let parseCard = JSON.parse(data);
-                    parseCard.push(cardData);
-    
-                    await AsyncStorage.setItem('@card', JSON.stringify(parseCard));
-    
-                } else {
-    
-                    await AsyncStorage.setItem('@card', JSON.stringify([cardData]));
+                let cardData : any = {
+                    id: uuid.v4(),
+                    cType: cType,
+                    cNum: cNum,
+                    cName: cName,
+                    cxm: cxm,
+                    cxy: cxy,
+                    cvc: cvc
                 }
+        
+                try {
+        
+                    const data = await AsyncStorage.getItem('@card');
+        
+                    if(data !== null) {
+        
+                        let parseCard = JSON.parse(data);
+                        parseCard.push(cardData);
+        
+                        await AsyncStorage.setItem('@card', JSON.stringify(parseCard));
+        
+                    } else {
+        
+                        await AsyncStorage.setItem('@card', JSON.stringify([cardData]));
+                    }
+        
+                    console.log('success');
     
-                console.log('success');
+                    navigation.navigate('Card');
+        
+                } catch(e) {
+        
+                    console.log(e);
+                }
 
-                navigation.navigate('Card');
-    
-            } catch(e) {
-    
-                console.log(e);
             }
-
         }
     }
 

@@ -61,7 +61,7 @@ function Budget({navigation}: {navigation: any}) {
         try {
             await AsyncStorage.removeItem('@budget');
             setBudget(0);
-            Alert.alert('Budget saved successfully', '', [
+            Alert.alert('Budget deleted successfully', '', [
                 
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
             ]);
