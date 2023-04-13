@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     View,
     Animated,
-    Alert,
   } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
@@ -130,7 +129,6 @@ useEffect(() => {
 
     return (
         <SafeAreaView style={styles.container}>
-
           <View style={styles.currentDateView}>
               <MaterialIcons onPress={subDay} name="keyboard-arrow-left" color="white" size={30} />
               <Text style={styles.currentDateText}>{moment(currentDate).format('Do MMMM YYYY, (ddd)')}</Text>
@@ -146,16 +144,16 @@ useEffect(() => {
 
           <View style={styles.section2}>
             <View style={[styles.section2_1, {backgroundColor: '#0FE38A', borderColor: '#0FE38A'}]}>
-                <Text style={styles.section2_1_1}>Income</Text>
-                <Text style={styles.section2_1_1}>£{income.toFixed(2)}</Text>
+                <Text style={[styles.section2_1_1, {color: "black"}]}>Income</Text>
+                <Text style={[styles.section2_1_1, {color: "black"}]}>£{income.toFixed(2)}</Text>
             </View>
             <View style={[styles.section2_1, {backgroundColor: '#FD6868', borderColor: '#FD6868'}]}>
                 <Text style={[styles.section2_1_1, {color: 'white'}]}>Expense</Text>
                 <Text style={[styles.section2_1_1, {color: 'white'}]}>£{expense.toFixed(2)}</Text>
             </View>
             <View style={[styles.section2_1, {backgroundColor: '#FFFFFF', borderColor: '#FFFFFF'}]}>
-                <Text style={styles.section2_1_1}>Total</Text>
-                <Text style={styles.section2_1_1}>£{(income - expense).toFixed(2)}</Text>
+                <Text style={[styles.section2_1_1, {color: "black"}]}>Total</Text>
+                <Text style={[styles.section2_1_1, {color: "black"}]}>£{(income - expense).toFixed(2)}</Text>
             </View>
           </View>
 
@@ -218,7 +216,7 @@ useEffect(() => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
     
   },
   currentDateView: {
@@ -273,7 +271,7 @@ const styles = StyleSheet.create({
     padding: 1,
     textAlign: 'center',
     fontSize: 15,
-    fontWeight: '500'
+    fontWeight: '500',
   },
 
   section3: {
@@ -293,8 +291,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent:'center',
     alignItems: 'center',
-    width: 45,  
-    height: 45,   
+    width: 55,  
+    height: 55,   
     borderRadius: 5,            
     backgroundColor: 'white',                                    
     position: 'absolute',                                          

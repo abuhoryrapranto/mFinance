@@ -165,9 +165,10 @@ const styles = StyleSheet.create({
 
     input: {
       flex: 1,
-      height: 35,
       borderWidth: 1,
-      padding: 10,
+      paddingTop: 2,
+      paddingBottom: 2,
+      paddingLeft: 10,
       borderColor: 'white',
       borderRadius: 5,
       color: 'white',

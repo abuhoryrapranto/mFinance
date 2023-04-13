@@ -6,26 +6,6 @@ import Budget from './Budget';
 import More from './More';
 import Chart from './Chart';
 
-
-import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    useColorScheme,
-    View,
-  } from 'react-native';
-
-function SettingsScreen() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Settings!</Text>
-      </View>
-    );
-}
-
 const Tab = createBottomTabNavigator();
 
 function BottomTabNavigation() {
@@ -36,7 +16,8 @@ function BottomTabNavigation() {
                 headerShown: false,
                 tabBarStyle:{
                 backgroundColor: "#333333",
-                marginBottom: 2,
+                height: 60,
+                paddingBottom: 5,
                 },
                 }}
                 

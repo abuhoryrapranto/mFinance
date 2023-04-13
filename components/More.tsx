@@ -29,36 +29,56 @@ function More({navigation}: {navigation: any}) {
 
         if(value) {
             let data = JSON.parse(value);
-            let finalData = data.map((item : any) => ({...item, deviceId: deviceId}));
-            const save = {
-                data: finalData
-            }
 
-            await fetch('https://mfinance-backend.onrender.com/backup/save', {
-            method: "POST",
-            body: JSON.stringify(save),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-            })
-            .then(res => {
-                if(res.status == 201) {
-                    Alert.alert('Backup saved successfully.', '', [
-                    
-                        {text: 'OK', onPress: () => console.log('OK Pressed')},
-                    ]);
+            if(data.length > 0) {
+
+                setLoading(true)
+
+                let finalData = data.map((item : any) => ({...item, deviceId: deviceId}));
+                const save = {
+                    data: finalData
                 }
+    
+                await fetch('https://mfinance-backend.onrender.com/backup/save', {
+                method: "POST",
+                body: JSON.stringify(save),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+                })
+                .then(res => {
+                    if(res.status == 201) {
+
+                        setLoading(false);
+
+                        Alert.alert('Backup saved successfully.', '', [
+                        
+                            {text: 'OK', onPress: () => console.log('OK Pressed')},
+                        ]);
+                    }
+                    
+                    
+                })
+                .catch(err => console.error(err));
                 
+            } else {
+
+                Alert.alert("You don't have enough data for backup!", '', [
+                    
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ]);
+            }
                 
-            })
-            .catch(err => console.error(err));
-                
+        } else {
+
+            Alert.alert("You don't have enough data for backup!", '', [
+                    
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);
         }
     }
 
     const load = async() => {
-
-        //await AsyncStorage.removeItem('@incExp')
 
         const data = await AsyncStorage.getItem('@incExp');
 
@@ -91,12 +111,26 @@ function More({navigation}: {navigation: any}) {
                         const response = await fetch(
                           `https://mfinance-backend.onrender.com/backup?deviceId=${deviceId}`,
                         );
-                        const data = await response.json();
 
-                        const save  = await AsyncStorage.setItem('@incExp', JSON.stringify(data.data));
-                        
-                        setLoading(false)
-              
+                        if(response.status == 200) {
+
+                            const data = await response.json();
+
+                            const save  = await AsyncStorage.setItem('@incExp', JSON.stringify(data.data));
+
+                            setLoading(false);
+                            
+                        } else {
+
+                            setLoading(false)
+
+                            Alert.alert("You don't have any backup data.", '', [
+                    
+                                {text: 'OK', onPress:() => console.log("Ok.")},
+                            ]);
+
+                        }
+
                       } catch (error) {
               
                         console.error(error);
@@ -154,7 +188,7 @@ function More({navigation}: {navigation: any}) {
                     loading == true ? 
                         <View style={{marginTop: 50, justifyContent: 'center', alignItems: "center"}}>
                             <ActivityIndicator size="large" color="#00ff00" />
-                            <Text style={{color: "white", fontSize: 15}}>Loadind Backup Data</Text>
+                            <Text style={{color: "white", fontSize: 15}}>Loading</Text>
                         </View>
                         :
                         ""

@@ -9,7 +9,7 @@ import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import StackNavigation from './components/StackNavigation';
 import 'react-native-gesture-handler';
-import { StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 
 const myTheme = DefaultTheme;
 myTheme.colors.background = "#333333";
@@ -18,6 +18,7 @@ function App(): JSX.Element {
 
   return (
     <NavigationContainer theme={myTheme}>
+      <StatusBar backgroundColor="#333333" />
       <StackNavigation />
     </NavigationContainer>
     

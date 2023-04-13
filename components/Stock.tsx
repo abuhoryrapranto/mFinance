@@ -122,7 +122,7 @@ function Stock({navigation}: {navigation: any}) {
                                 ))
                             }
                             </> :
-                            <Text>No Data Found!</Text>
+                            <Text style={{justifyContent: 'center', alignItems: 'center', marginTop: 30}}>No Data Found!</Text>
 
                             :   <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 30}}>
                                     <ActivityIndicator size="large" color="#00ff00" />
@@ -189,7 +189,9 @@ const styles = StyleSheet.create({
 
     input: {
         flex: 1,
-        height: 35,
+        paddingTop: 2,
+        paddingBottom: 2,
+        paddingLeft: 10,
         borderWidth: 1,
         padding: 10,
         borderColor: 'white',

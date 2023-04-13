@@ -8,6 +8,7 @@ import {
     ImageBackground,
     Image,
     Dimensions,
+    StatusBar,
   } from 'react-native';
 
 import Onboarding from 'react-native-onboarding-swiper';
@@ -24,7 +25,7 @@ function Onboard({navigation}: {navigation: any}) {
 
     return(
             <View style={styles.container}>
-
+                <StatusBar backgroundColor="white"/>
                 <Onboarding
                     ref={onboardingRef}
                     onSkip={done}

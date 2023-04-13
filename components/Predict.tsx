@@ -141,7 +141,9 @@ const styles = StyleSheet.create({
 
     input: {
         flex: 1,
-        height: 35,
+        paddingTop: 2,
+        paddingBottom: 2,
+        paddingLeft: 10,
         borderWidth: 1,
         padding: 10,
         borderColor: 'white',
