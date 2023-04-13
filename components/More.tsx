@@ -1,18 +1,112 @@
+import React, { useState } from 'react';  
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
+    ActivityIndicator,
     StyleSheet,
     Text,
     TouchableOpacity,
-    useColorScheme,
+    Alert,
     View,
   } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DeviceInfo from 'react-native-device-info';
 
 function More({navigation}: {navigation: any}) {
+
+    const [deviceId, setDeviceId] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const backup = async () => {
+        
+        DeviceInfo.getUniqueId().then((uniqueId) => {
+            setDeviceId(uniqueId);
+        });
+
+        const value = await AsyncStorage.getItem('@incExp');
+
+        if(value) {
+            let data = JSON.parse(value);
+            let finalData = data.map((item : any) => ({...item, deviceId: deviceId}));
+            const save = {
+                data: finalData
+            }
+
+            await fetch('https://mfinance-backend.onrender.com/backup/save', {
+            method: "POST",
+            body: JSON.stringify(save),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            })
+            .then(res => {
+                if(res.status == 201) {
+                    Alert.alert('Backup saved successfully.', '', [
+                    
+                        {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    ]);
+                }
+                
+                
+            })
+            .catch(err => console.error(err));
+                
+        }
+    }
+
+    const load = async() => {
+
+        //await AsyncStorage.removeItem('@incExp')
+
+        const data = await AsyncStorage.getItem('@incExp');
+
+        if(data) {
+
+            Alert.alert('You already have data', 'You can not load data', [
+                    
+                {text: 'OK', onPress:() => console.log("Ok.")},
+            ]);
+
+        } else {
+            
+            Alert.alert('Are you sure load backup data?','', [
+
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                    
+                {text: 'OK', onPress: async() => {
+
+                    setLoading(true);
+
+                    DeviceInfo.getUniqueId().then((uniqueId) => {
+                        setDeviceId(uniqueId);
+                    });
+
+                    try {
+                        const response = await fetch(
+                          `https://mfinance-backend.onrender.com/backup?deviceId=${deviceId}`,
+                        );
+                        const data = await response.json();
+
+                        const save  = await AsyncStorage.setItem('@incExp', JSON.stringify(data.data));
+                        
+                        setLoading(false)
+              
+                      } catch (error) {
+              
+                        console.error(error);
+                      }
+
+                }},
+            ]);
+        }  
+    }
+
     return(
         <SafeAreaView>
             <View style={styles.container}>
@@ -43,12 +137,30 @@ function More({navigation}: {navigation: any}) {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.section1_1}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={backup}>
                             <MaterialIcons name="settings-backup-restore" color='white' size={50} />
                             <Text style={{color: 'white', textAlign: 'center'}}>Backup</Text>
                         </TouchableOpacity>
                     </View>
+                    <View style={styles.section1_1}>
+                        <TouchableOpacity onPress={load}>
+                            <MaterialIcons name="cloud-upload" color='white' size={50} />
+                            <Text style={{color: 'white', textAlign: 'center'}}>Load</Text>
+                        </TouchableOpacity>
+                    </View>
                   </View>
+
+                  {
+                    loading == true ? 
+                        <View style={{marginTop: 50, justifyContent: 'center', alignItems: "center"}}>
+                            <ActivityIndicator size="large" color="#00ff00" />
+                            <Text style={{color: "white", fontSize: 15}}>Loadind Backup Data</Text>
+                        </View>
+                        :
+                        ""
+                  }
+
+                  
             </View>
         </SafeAreaView>
     );
@@ -70,7 +182,7 @@ const styles = StyleSheet.create({
     section1: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: "space-between",
+        justifyContent: "flex-start",
     },
     
     section1_1: {

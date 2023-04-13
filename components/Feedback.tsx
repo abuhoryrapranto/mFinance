@@ -9,19 +9,50 @@ import {
     useColorScheme,
     View,
     TextInput,
-    FlatList,
+    Alert,
   } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DeviceInfo from 'react-native-device-info';
 
 function Feedback({navigation}: {navigation: any}) {
 
     const [feedback, setFeedback] = useState('');
+    const [deviceId, setDeviceId] = useState('');
 
-    const saveNote = async () => {
 
-        
+    const saveFeedback = async () => {
+
+        DeviceInfo.getUniqueId().then((uniqueId) => {
+            setDeviceId(uniqueId);
+        });
+
+        const data : any = {
+            deviceId: deviceId,
+            message : feedback
+        }
+
+        await fetch('https://mfinance-backend.onrender.com/feedback/save', {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then(res => {
+            if(res.status == 201) {
+                setFeedback('');
+                Alert.alert('Feedback send successfully.', '', [
+                
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ]);
+            }
+            
+            
+        })
+        .catch(err => console.error(err));
+  
     }
+
     return(
             <SafeAreaView style={{flex: 1}}>
 
@@ -34,7 +65,7 @@ function Feedback({navigation}: {navigation: any}) {
 
                     <View style={{width: '100%', marginTop: 20}}>
                         <TextInput style={styles.input} value={feedback} onChangeText={newNote => setFeedback(newNote)} placeholder="Write your experiences..." placeholderTextColor="white"></TextInput>
-                        <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 10, marginTop: 10, width: '100%'}} onPress={saveNote}>
+                        <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 10, marginTop: 10, width: '100%'}} onPress={saveFeedback}>
                             <Text style={{color: 'white', textAlign: 'center', fontSize: 17, fontWeight: '500'}}>Save</Text>
                         </TouchableOpacity>
                     </View>

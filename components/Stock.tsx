@@ -6,6 +6,7 @@ import {
     View,
     TextInput,
     Alert,
+    ActivityIndicator,
   } from 'react-native';
 
 import React, { useState, useEffect } from 'react';
@@ -124,7 +125,7 @@ function Stock({navigation}: {navigation: any}) {
                             <Text>No Data Found!</Text>
 
                             :   <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 30}}>
-                                    <Text style={{color: 'white', fontSize: 20, fontWeight: '500'}}>Loading...</Text>
+                                    <ActivityIndicator size="large" color="#00ff00" />
                                 </View>
                         }
                         

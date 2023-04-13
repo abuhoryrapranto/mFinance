@@ -1,7 +1,6 @@
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
+    ActivityIndicator,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -111,7 +110,9 @@ function Atm({navigation}: {navigation: any}) {
                       </>
                        :
 
-                      <Text style={{color: 'white', fontSize: 17, textAlign: 'center', marginTop: 20}}>Loading...</Text>
+                       <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                          <ActivityIndicator size="large" color="#00ff00" />
+                        </View>
                     }
                 </View>
             </View>
