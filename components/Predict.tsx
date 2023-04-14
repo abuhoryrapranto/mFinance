@@ -6,6 +6,7 @@ import {
     View,
     TextInput,
     Alert,
+    ActivityIndicator
   } from 'react-native';
 
 import React, { useState, useEffect } from 'react';
@@ -18,6 +19,7 @@ function Predict({navigation}: {navigation: any}) {
     const [inc, setInc] = useState('');
     const [fm, setFM] = useState('');
     let [pre, setPre] = useState(0);
+    let [loading, setLoading] = useState(false);
 
 
     const predict = async () => {
@@ -31,7 +33,7 @@ function Predict({navigation}: {navigation: any}) {
 
         } else if(fm == '') {
 
-            Alert.alert('Num of family memebers can not be empty', '', [
+            Alert.alert('Num of family members can not be empty', '', [
                 
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
             ]);
@@ -44,6 +46,9 @@ function Predict({navigation}: {navigation: any}) {
             }
     
             try {
+
+                setLoading(true);
+
                 const response : any = await fetch('https://budget-he1u.onrender.com/predict', {
                     method: "POST",
                     headers: {
@@ -55,6 +60,8 @@ function Predict({navigation}: {navigation: any}) {
     
                 const result = await response.json();
                 setPre(result.data);
+
+                setLoading(false);
       
               } catch (error) {
       
@@ -67,14 +74,31 @@ function Predict({navigation}: {navigation: any}) {
 
         try {
 
-            await AsyncStorage.setItem('@budget', pre.toString());
+            if(!pre) {
 
-            console.log('success');
-
-            Alert.alert('Budget saved successfully', '', [
+                Alert.alert('Budget not predicted yet.', '', [
                 
-                {text: 'OK', onPress: () => navigation.goBack()},
-            ]);
+                    {text: 'OK', onPress: () => navigation.goBack()},
+                ]); 
+
+            } else {
+
+                setLoading(true);
+
+                await AsyncStorage.setItem('@budget', pre.toString());
+
+                setLoading(false);
+
+                console.log('success');
+
+                Alert.alert('Budget saved successfully', '', [
+                    
+                    {text: 'OK', onPress: () => navigation.goBack()},
+                ]);
+
+            }
+
+            
 
         } catch(e) {
             
@@ -107,19 +131,34 @@ function Predict({navigation}: {navigation: any}) {
                     <TextInput style={styles.input} keyboardType='numeric' value={fm} onChangeText={newValue => setFM(newValue)}></TextInput>
                 </View>
 
-                <View style={{alignItems: "center", marginTop: 70}}>
-                    <TouchableOpacity style={{backgroundColor: '#FD6868', height: 100, width: 100, borderRadius: 50, justifyContent: 'center', alignItems: 'center'}} onPress={predict}>
-                        <Text style={{color: 'white', fontSize: 18, fontWeight: '500'}}>Predict</Text>
-                    </TouchableOpacity>
-                </View>
-
                 {
-                    pre > 0 ? <Text style={{color: 'white', fontSize: 17, fontWeight: '500', textAlign: 'center', marginTop: 30}}>Your Annual Budget Should Be <Text style={{color: "#0FE38A"}}>£{pre}</Text></Text> : ""
+                    loading == false ?
+
+                    <View style={{alignItems: "center", marginTop: 70}}>
+                        <TouchableOpacity style={{backgroundColor: '#FD6868', height: 100, width: 100, borderRadius: 50, justifyContent: 'center', alignItems: 'center'}} onPress={predict}>
+                            <Text style={{color: 'white', fontSize: 18, fontWeight: '500'}}>Predict</Text>
+                        </TouchableOpacity>
+                    </View> :
+
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 70}}>
+                        <ActivityIndicator size="large" color="#00ff00" />
+                        <Text>Loading</Text>
+                    </View>
+
                 }
 
-                <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 20, marginTop: 50, width: '100%'}} onPress={savePredictBudget}>
-                    <Text style={{color: 'white', textAlign: 'center', fontSize: 17, fontWeight: '700'}}>Save</Text>
-                </TouchableOpacity>
+                {
+                    pre > 0 ?
+                    <>
+                        <Text style={{color: 'white', fontSize: 17, fontWeight: '500', textAlign: 'center', marginTop: 30}}>Your Annual Budget Should Be <Text style={{color: "#0FE38A"}}>£{pre}</Text></Text>
+
+                        <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 20, marginTop: 50, width: '100%'}} onPress={savePredictBudget}>
+                            <Text style={{color: 'white', textAlign: 'center', fontSize: 17, fontWeight: '700'}}>Save</Text>
+                        </TouchableOpacity>
+                    </>
+                    
+                    : ""
+                }
 
             </View>
         </SafeAreaView>

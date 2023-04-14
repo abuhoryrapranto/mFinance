@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';  
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
     TouchableOpacity,
-    useColorScheme,
     View,
     TextInput,
     FlatList,
@@ -26,14 +23,18 @@ function Note({navigation}: {navigation: any}) {
 
     const saveNote = async () => {
 
+        const notes = await AsyncStorage.getItem('@note');
+
         let noteData : any = {
             id: uuid.v4(),
-            note: note
+            note: note,
+            completed: false,
+            count: notes ? JSON.parse(notes).length+1 : 1
         }
 
         try {
 
-            const notes = await AsyncStorage.getItem('@note');
+            
 
             if(notes !== null) {
 
@@ -51,7 +52,7 @@ function Note({navigation}: {navigation: any}) {
                 getNotes();
             }
 
-            console.log('success');
+            console.log("success");
 
         } catch(e) {
 
@@ -68,7 +69,7 @@ function Note({navigation}: {navigation: any}) {
             if(notesData !== null) {
                 
                 const parseData = JSON.parse(notesData);
-                setMyNote(parseData);
+                setMyNote(parseData.sort((a : any, b : any) => b.count - a.count));
                 console.log(myNote);
 
             } else {
@@ -81,6 +82,35 @@ function Note({navigation}: {navigation: any}) {
             console.log(e);
         }
     }
+
+    const done = async(item : any) => {
+
+        const notes = await AsyncStorage.getItem('@note');
+            let data : Array<any> = [];
+
+            if(notes) {
+                data = JSON.parse(notes);
+            }
+            const newNote = data.filter((data, index) => data.id != item.id);
+
+            let addItem : any = {
+                id: uuid.v4(),
+                note: item.note,
+                completed: item.completed == true ? false : true,
+                count: item.count,
+            }
+    
+            try {
+
+                newNote.push(addItem);
+                await AsyncStorage.setItem('@note', JSON.stringify(newNote));
+                getNotes();
+
+            } catch(e) {
+    
+                console.log(e);
+            }
+    } 
 
     const deleteNote = async (uuid : any) => {
 
@@ -111,12 +141,16 @@ function Note({navigation}: {navigation: any}) {
                         <FlatList
                         data={myNote}
                         renderItem={({item} : any) => 
-                            <View style={{flexDirection: 'row',  paddingTop: 15}}>
-                                <FontAwesome name="dot-circle-o" color="white" size={15} />
-                                <Text style={{color: 'white', fontSize: 16, paddingLeft: 5}}>{item.note}</Text>
-                                <TouchableOpacity style={{flex: 1}} onPress={() => deleteNote(item.id)}>
-                                    <Text style={{textAlign: 'right', color: '#FD6868', fontSize: 16}}>Delete</Text>
+                            <View style={{flexDirection: 'row', alignItems: "center", paddingTop: 15}}>
+
+                                <FontAwesome name="dot-circle-o" color="white" style={{textAlign: 'left'}} size={15} />
+  
+                                <Text style={[item.completed == true ? { textDecorationLine: 'line-through'} : {}, {color: 'white', fontSize: 16, paddingLeft: 5}]} onPress={() => done(item)}>{item.note}</Text>
+                                
+                                <TouchableOpacity style={{marginLeft: "auto"}} onPress={() => deleteNote(item.id)}>
+                                    <Text style={{ color: '#FD6868', fontSize: 16}}>Delete</Text>
                                 </TouchableOpacity>
+                                
                             </View>
                             }
                         >

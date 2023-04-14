@@ -87,9 +87,13 @@ function Budget({navigation}: {navigation: any}) {
                 
                 <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
                     <Text style={{color: 'white', fontSize: 17, fontWeight: '700'}}>Your annual budget is: £{budget.toFixed(2)}</Text>
-                    <TouchableOpacity style={{flex: 1}} onPress={deleteBudget}>
-                        <Text style={{textAlign: 'right', fontSize: 17, color: '#FD6868'}}>Delete</Text>
-                    </TouchableOpacity>
+                    {
+                        budget !== 0 ? 
+                        <TouchableOpacity style={{flex: 1}} onPress={deleteBudget}>
+                            <Text style={{textAlign: 'right', fontSize: 17, color: '#FD6868'}}>Delete</Text>
+                        </TouchableOpacity> : 
+                        ""
+                    }
                 </View>
 
                 

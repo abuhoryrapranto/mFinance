@@ -122,7 +122,7 @@ function Stock({navigation}: {navigation: any}) {
                                 ))
                             }
                             </> :
-                            <Text style={{justifyContent: 'center', alignItems: 'center', marginTop: 30}}>No Data Found!</Text>
+                            <Text style={{textAlign: 'center', marginTop: 20, color: "white", fontSize: 15}}>No Data Found!</Text>
 
                             :   <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 30}}>
                                     <ActivityIndicator size="large" color="#00ff00" />

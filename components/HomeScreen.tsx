@@ -261,10 +261,10 @@ const styles = StyleSheet.create({
 
   section2_1: {
     width: '30%',
-    borderWidth: 2,
-    borderStyle: 'solid',
+    // borderWidth: 2,
+    // borderStyle: 'solid',
     borderRadius: 10,
-    padding: 5
+    padding: 7
   },
 
   section2_1_1: {
