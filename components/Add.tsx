@@ -1,14 +1,10 @@
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
     TouchableOpacity,
-    useColorScheme,
     View,
     TextInput,
-    Button,
     KeyboardAvoidingView,
     Dimensions,
     Alert,
@@ -20,6 +16,7 @@ import DatePicker from 'react-native-date-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
+import Button from './Button';
 
 function Add({navigation}: {navigation: any}) {
 
@@ -222,11 +219,7 @@ function Add({navigation}: {navigation: any}) {
                     <TextInput style={styles.input} value={note} onChangeText={newNote => setNote(newNote)}></TextInput>
                 </View>
 
-                <View>
-                    <TouchableOpacity style={styles.saveBtn} onPress={store}>
-                        <Text style={{color: 'white', fontSize: 18, fontWeight: '700'}}>Save</Text>
-                    </TouchableOpacity>
-                </View>
+                <Button name="Save" fontSize={18} fontWeight="700" marginTop={30} myFunc={store} />
 
             </View>
 
@@ -292,15 +285,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500'
       },
-
-      saveBtn: {
-        borderColor: '#0FE38A',
-        borderRadius: 5,
-        backgroundColor: '#0FE38A',
-        marginTop: 30,
-        padding: 13,
-        alignItems: 'center',
-      }
 })
 
 const pickerSelectStyles = StyleSheet.create({

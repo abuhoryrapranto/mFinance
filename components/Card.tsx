@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { useIsFocused } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Button from './Button';
 
 function Card({navigation}: {navigation: any}) {
 
@@ -84,9 +85,8 @@ function Card({navigation}: {navigation: any}) {
                         <Text style={{fontSize: 17, color: "white"}}>Card</Text>
                     </View>
 
-                    <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 10, marginTop: 20, width: '100%'}} onPress={() => navigation.navigate('AddCard')} >
-                        <Text style={{color: 'white', textAlign: 'center', fontSize: 17, fontWeight: '500'}}>Add</Text>
-                    </TouchableOpacity>
+                    <Button name="Add" fontSize={18} fontWeight="700" marginTop={20} myFunc={() => navigation.navigate('AddCard')} />
+
                     <View style={{marginTop: 20}}>
                         <FlatList
                             data={card}

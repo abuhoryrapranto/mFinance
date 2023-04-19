@@ -16,6 +16,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import Button from './Button';
 
 function Budget({navigation}: {navigation: any}) {
 
@@ -103,11 +104,7 @@ function Budget({navigation}: {navigation: any}) {
                     <TextInput style={styles.input} keyboardType='numeric' value={saveBudget} onChangeText={newValue => setSaveBudget(newValue)}></TextInput>
                 </View>
 
-                <View>
-                    <TouchableOpacity style={styles.saveBtn} onPress={saveManualBudget}>
-                        <Text style={{color: 'white', fontSize: 18, fontWeight: '700'}}>Save</Text>
-                    </TouchableOpacity>
-                </View>
+                <Button name="Save" fontSize={18} fontWeight="700" marginTop={25} myFunc={saveManualBudget} />
 
                 <View>
                     <TouchableOpacity style={styles.predictBtn} onPress={() => navigation.navigate('Predict')}>
@@ -144,15 +141,6 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         borderRadius: 5,
         color: 'white',
-    },
-
-    saveBtn: {
-        borderColor: '#0FE38A',
-        borderRadius: 5,
-        backgroundColor: '#0FE38A',
-        marginTop: 30,
-        padding: 13,
-        alignItems: 'center',
     },
 
       predictBtn: {

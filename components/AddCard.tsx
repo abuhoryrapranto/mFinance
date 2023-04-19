@@ -17,6 +17,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import RNPickerSelect from 'react-native-picker-select';
+import Button from './Button';
 
 function AddCard({navigation}: {navigation: any}) {
 
@@ -231,9 +232,7 @@ function AddCard({navigation}: {navigation: any}) {
                         <TextInput style={styles.input} value={cvc} onChangeText={value => setCvc(value)}></TextInput>
                     </View>
 
-                    <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 10, marginTop: 30, width: '100%'}} onPress={saveCard} >
-                        <Text style={{color: 'white', textAlign: 'center', fontSize: 17, fontWeight: '500'}}>Save</Text>
-                    </TouchableOpacity>
+                    <Button name="Save" fontSize={17} fontWeight="700" marginTop={30} myFunc={saveCard} />
 
                 </View>
 

@@ -11,8 +11,8 @@ import {
 
 import React, { useState, useEffect } from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Button from './Button';
 
 function Predict({navigation}: {navigation: any}) {
 
@@ -142,7 +142,7 @@ function Predict({navigation}: {navigation: any}) {
 
                     <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 70}}>
                         <ActivityIndicator size="large" color="#00ff00" />
-                        <Text>Loading</Text>
+                        <Text style={{color: "white"}}>Loading</Text>
                     </View>
 
                 }
@@ -152,9 +152,7 @@ function Predict({navigation}: {navigation: any}) {
                     <>
                         <Text style={{color: 'white', fontSize: 17, fontWeight: '500', textAlign: 'center', marginTop: 30}}>Your Annual Budget Should Be <Text style={{color: "#0FE38A"}}>£{pre}</Text></Text>
 
-                        <TouchableOpacity style={{backgroundColor: '#0FE38A', borderRadius: 5, padding: 20, marginTop: 50, width: '100%'}} onPress={savePredictBudget}>
-                            <Text style={{color: 'white', textAlign: 'center', fontSize: 17, fontWeight: '700'}}>Save</Text>
-                        </TouchableOpacity>
+                        <Button name="Save" fontSize={18} fontWeight="700" marginTop={25} padding={20} myFunc={savePredictBudget} />
                     </>
                     
                     : ""
@@ -188,15 +186,6 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         borderRadius: 5,
         color: 'white',
-    },
-
-    saveBtn: {
-        borderColor: '#0FE38A',
-        borderRadius: 5,
-        backgroundColor: '#0FE38A',
-        marginTop: 30,
-        padding: 13,
-        alignItems: 'center',
     },
 
       predictBtn: {

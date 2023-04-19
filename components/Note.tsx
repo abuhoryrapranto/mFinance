@@ -7,6 +7,7 @@ import {
     View,
     TextInput,
     FlatList,
+    Alert,
   } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,7 +24,15 @@ function Note({navigation}: {navigation: any}) {
 
     const saveNote = async () => {
 
-        const notes = await AsyncStorage.getItem('@note');
+        if(note == '') {
+            Alert.alert('Note field is empty', 'Please put some notes here', [
+                
+                {text: 'OK', onPress: () => console.log("Ok.")},
+            ]);
+            
+        } else {
+
+            const notes = await AsyncStorage.getItem('@note');
 
         let noteData : any = {
             id: uuid.v4(),
@@ -33,8 +42,6 @@ function Note({navigation}: {navigation: any}) {
         }
 
         try {
-
-            
 
             if(notes !== null) {
 
@@ -57,6 +64,8 @@ function Note({navigation}: {navigation: any}) {
         } catch(e) {
 
             console.log(e);
+        }
+
         }
     }
 
@@ -145,7 +154,7 @@ function Note({navigation}: {navigation: any}) {
 
                                 <FontAwesome name="dot-circle-o" color="white" style={{textAlign: 'left'}} size={15} />
   
-                                <Text style={[item.completed == true ? { textDecorationLine: 'line-through'} : {}, {color: 'white', fontSize: 16, paddingLeft: 5}]} onPress={() => done(item)}>{item.note}</Text>
+                                <Text style={[item.completed == true ? { textDecorationLine: 'line-through'} : {}, {color: 'white', fontSize: 16, paddingLeft: 5, maxWidth: '80%'}]} onPress={() => done(item)}>{item.note}</Text>
                                 
                                 <TouchableOpacity style={{marginLeft: "auto"}} onPress={() => deleteNote(item.id)}>
                                     <Text style={{ color: '#FD6868', fontSize: 16}}>Delete</Text>
