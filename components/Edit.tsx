@@ -48,7 +48,8 @@ function Edit({route, navigation} : any) {
         { label: 'Bonus', value: 'Bonus' },
         { label: 'Others', value: 'Others' },
     ];
-
+    
+    //This function used for edit income or expense data.
     const update = async () => {
 
         if(date == null) {
@@ -143,10 +144,10 @@ function Edit({route, navigation} : any) {
         <SafeAreaView>
             <KeyboardAvoidingView>
             <View style={styles.container}>
-                <View style={styles.headSection}>
-                    <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
+                <TouchableOpacity style={styles.headSection} onPress={() => navigation.goBack()} >
+                    <MaterialIcons name="arrow-back-ios" color="white" size={20}/>
                     <Text style={{fontSize: 17, color: "white"}}>Edit</Text>
-                </View>
+                </TouchableOpacity>
 
                 <View style={styles.section2}>
                     <TouchableOpacity style={[styles.section2_1, {backgroundColor: type === 'Income' ? '#0FE38A' : 'transparent', borderColor: '#0FE38A'}]} onPress={() => {setType('Income'), setCategory('')}}>

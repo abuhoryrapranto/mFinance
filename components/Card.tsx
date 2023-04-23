@@ -22,6 +22,7 @@ function Card({navigation}: {navigation: any}) {
 
     const [card, setCard] = useState<any[]>([]);
 
+    //This function used for get all atm cards from async storage
     const getCards = async () => {
 
         try {
@@ -59,7 +60,7 @@ function Card({navigation}: {navigation: any}) {
         )
       }
     
-    
+      //This funnction used for delete card from async storage
       const deleteCard = async (index : number, uuid : any) => {
 
         const newCard = card.filter((item, index) => item.id != uuid);
@@ -80,10 +81,10 @@ function Card({navigation}: {navigation: any}) {
             <SafeAreaView style={{flex: 1}}>
 
                 <View style={styles.container}>
-                    <View style={styles.headSection}>
-                        <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
+                    <TouchableOpacity style={styles.headSection} onPress={() => navigation.goBack()} >
+                        <MaterialIcons name="arrow-back-ios" color="white" size={20} />
                         <Text style={{fontSize: 17, color: "white"}}>Card</Text>
-                    </View>
+                    </TouchableOpacity>
 
                     <Button name="Add" fontSize={18} fontWeight="700" marginTop={20} myFunc={() => navigation.navigate('AddCard')} />
 

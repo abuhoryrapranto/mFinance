@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';  
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
     TouchableOpacity,
-    useColorScheme,
     View,
     TextInput,
     Alert,
@@ -19,7 +16,7 @@ function Feedback({navigation}: {navigation: any}) {
     const [feedback, setFeedback] = useState('');
     const [deviceId, setDeviceId] = useState('');
 
-
+    //This function save feedback from users input.
     const saveFeedback = async () => {
 
         DeviceInfo.getUniqueId().then((uniqueId) => {
@@ -57,10 +54,10 @@ function Feedback({navigation}: {navigation: any}) {
             <SafeAreaView style={{flex: 1}}>
 
                 <View style={styles.container}>
-                    <View style={styles.headSection}>
-                        <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
+                    <TouchableOpacity style={styles.headSection} onPress={() => navigation.goBack()} >
+                        <MaterialIcons name="arrow-back-ios" color="white" size={20} />
                         <Text style={{fontSize: 17, color: "white"}}>Feedback</Text>
-                    </View>
+                    </TouchableOpacity>
 
 
                     <View style={{width: '100%', marginTop: 20}}>

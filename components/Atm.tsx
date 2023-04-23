@@ -19,6 +19,7 @@ function Atm({navigation}: {navigation: any}) {
     const [atm, setAtm] = useState<any[]>([]);
     const [search, setSearch] = useState('');
 
+    //This function works as fetch atm data from api
       const getAllAtms = async () => {
         try {
           const response = await fetch(
@@ -34,6 +35,7 @@ function Atm({navigation}: {navigation: any}) {
         }
       };
 
+      //This function works for search atm from fetched data
       const searchAtm = () => {
 
         if(search.length > 0) {

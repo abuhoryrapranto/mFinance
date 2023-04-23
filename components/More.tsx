@@ -19,6 +19,7 @@ function More({navigation}: {navigation: any}) {
     const [deviceId, setDeviceId] = useState('');
     const [loading, setLoading] = useState(false);
 
+    //This function used for backup data in NoSQL database (MongoDB).
     const backup = async () => {
         
         DeviceInfo.getUniqueId().then((uniqueId) => {
@@ -77,6 +78,8 @@ function More({navigation}: {navigation: any}) {
             ]);
         }
     }
+
+    //This function used for load backup data from NoSQL database (MongoDB).
 
     const load = async() => {
 

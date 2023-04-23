@@ -5,6 +5,7 @@ import {
     Text,
     View,
     Dimensions,
+    TouchableOpacity,
   } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -37,7 +38,8 @@ function Chart({navigation}: {navigation: any}) {
           legendFontSize: 15
         }
       ];
-
+    
+    //This function fetch income and expense data from async storage and also calculate for charts.
     const monthlyExpense = async() => {
 
         try {
@@ -98,10 +100,10 @@ function Chart({navigation}: {navigation: any}) {
             <SafeAreaView style={{flex: 1}}>
 
                 <View style={styles.container}>
-                    <View style={styles.headSection}>
-                        <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
+                    <TouchableOpacity style={styles.headSection} onPress={() => navigation.goBack()} >
+                        <MaterialIcons name="arrow-back-ios" color="white" size={20} />
                         <Text style={{fontSize: 17, color: "white"}}>Chart</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{marginTop: 20}}>

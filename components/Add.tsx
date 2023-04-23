@@ -18,7 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import Button from './Button';
 
-function Add({navigation}: {navigation: any}) {
+function Add({route, navigation} : any) {
 
     const [headerText, setHeaderText] = useState('Expense');
     const [tabChange, setTabChange] = useState(1);
@@ -29,6 +29,7 @@ function Add({navigation}: {navigation: any}) {
     const [accountType, setAccountType] = useState('');
     const [note, setNote] = useState('');
 
+    // This function works for change tab for daily, weekly, and monthly income/expense
     const chnageTab = (num : number) => {
 
         if(num === 0) {
@@ -61,6 +62,7 @@ function Add({navigation}: {navigation: any}) {
         { label: 'Others', value: 'Others' },
     ];
 
+    //This single function store the income and expense in async storage
     const store = async () => {
 
         if(date == null) {
@@ -161,16 +163,37 @@ function Add({navigation}: {navigation: any}) {
         }
       
         console.log('Done.')
-      }
+    }
+
+    useEffect(() => {
+
+        if(route.params.type == 'income') {
+
+            setTabChange(0);
+            setHeaderText('Income');
+
+        } else if(route.params.type == 'expense') {
+
+            setTabChange(1);
+            setHeaderText('Expense');
+
+        } else {
+
+            setTabChange(1);
+            setHeaderText('Expense');
+        }
+        
+     }, []);
 
     return(
         <SafeAreaView>
             <KeyboardAvoidingView>
             <View style={styles.container}>
-                <View style={styles.headSection}>
-                    <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
+                
+                <TouchableOpacity style={styles.headSection} onPress={() => navigation.goBack()} >
+                    <MaterialIcons name="arrow-back-ios" color="white" size={20} />
                     <Text style={{fontSize: 17, color: "white"}}>{headerText}</Text>
-                </View>
+                </TouchableOpacity>
 
                 <View style={styles.section2}>
                     <TouchableOpacity style={[styles.section2_1, {backgroundColor: tabChange === 0 ? '#0FE38A' : 'transparent', borderColor: '#0FE38A'}]} onPress={() => chnageTab(0)}>
@@ -251,7 +274,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 5,
-      },
+    },
     
     input: {
         flex: 1,

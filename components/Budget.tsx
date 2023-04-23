@@ -25,6 +25,7 @@ function Budget({navigation}: {navigation: any}) {
     let [budget, setBudget] = useState<Float>(0);
     let [saveBudget, setSaveBudget] = useState('');
 
+    //This function works for get budget data from async storage.
     const getBudget = async () => {
 
         const data = await AsyncStorage.getItem('@budget');
@@ -34,6 +35,7 @@ function Budget({navigation}: {navigation: any}) {
         }
     }
 
+    //This function works for save manual budget in async storage.
     const saveManualBudget = async () => {
 
         try {
@@ -57,6 +59,7 @@ function Budget({navigation}: {navigation: any}) {
         }
     }
 
+    //This function works for delete budget data from async storage.
     const deleteBudget = async () => {
 
         try {
@@ -81,10 +84,10 @@ function Budget({navigation}: {navigation: any}) {
     return(
         <SafeAreaView>
             <View style={styles.container}>
-                <View style={styles.headSection}>
-                    <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
+                <TouchableOpacity style={styles.headSection} onPress={() => navigation.goBack()} >
+                    <MaterialIcons name="arrow-back-ios" color="white" size={20} />
                     <Text style={{fontSize: 17, color: "white"}}>Budget</Text>
-                </View>
+                </TouchableOpacity>
                 
                 <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
                     <Text style={{color: 'white', fontSize: 17, fontWeight: '700'}}>Your annual budget is: £{budget.toFixed(2)}</Text>

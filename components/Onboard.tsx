@@ -18,6 +18,7 @@ function Onboard({navigation}: {navigation: any}) {
 
     const onboardingRef = useRef<Onboarding>(null);
 
+    //This function works when users set onboarding done.
     const done = async () => {
         await AsyncStorage.setItem('@onboard', 'done');
         navigation.replace('Tabs');

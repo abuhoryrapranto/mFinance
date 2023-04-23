@@ -7,6 +7,7 @@ import {
     TextInput,
     Alert,
     ActivityIndicator,
+    TouchableOpacity,
   } from 'react-native';
 
 import React, { useState, useEffect } from 'react';
@@ -18,6 +19,7 @@ function Stock({navigation}: {navigation: any}) {
     let [loading, setLoading] = useState(1);
     const [search, setSearch] = useState('');
 
+      //This function helps for get all stocks data from third party api (Rapid Api)
       const getAllStocks = async () => {
 
         setLoading(1);
@@ -44,6 +46,7 @@ function Stock({navigation}: {navigation: any}) {
         }
       };
 
+      //This api helps for search stocks data from api.
       const searchStocks = () => {
 
         if(search.length > 0) {
@@ -78,10 +81,10 @@ function Stock({navigation}: {navigation: any}) {
     return(
         <SafeAreaView>
             <View style={styles.container}>
-                <View style={styles.headSection}>
-                    <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
+                <TouchableOpacity style={styles.headSection} onPress={() => navigation.goBack()} >
+                    <MaterialIcons name="arrow-back-ios" color="white" size={20} />
                     <Text style={{fontSize: 17, color: "white"}}>Stock</Text>
-                </View>
+                </TouchableOpacity>
 
 
                 {

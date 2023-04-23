@@ -37,6 +37,7 @@ function HomeScreen({navigation}: {navigation: any}) {
     setCurrentDate(newDate);
   }
 
+  //This single function fetch data from async storage for income and expense and also do lots of calculation.
   const getDataByDate = async () => {
 
     let sumInc : Float = 0;
@@ -143,14 +144,14 @@ useEffect(() => {
           </View>
 
           <View style={styles.section2}>
-            <View style={[styles.section2_1, {backgroundColor: '#0FE38A', borderColor: '#0FE38A'}]}>
+            <TouchableOpacity style={[styles.section2_1, {backgroundColor: '#0FE38A', borderColor: '#0FE38A'}]} onPress={() => navigation.navigate('Add', {type:'income'})}>
                 <Text style={[styles.section2_1_1, {color: "black"}]}>Income</Text>
                 <Text style={[styles.section2_1_1, {color: "black"}]}>£{income.toFixed(2)}</Text>
-            </View>
-            <View style={[styles.section2_1, {backgroundColor: '#FD6868', borderColor: '#FD6868'}]}>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.section2_1, {backgroundColor: '#FD6868', borderColor: '#FD6868'}]} onPress={() => navigation.navigate('Add', {type:'expense'})}>
                 <Text style={[styles.section2_1_1, {color: 'white'}]}>Expense</Text>
                 <Text style={[styles.section2_1_1, {color: 'white'}]}>£{expense.toFixed(2)}</Text>
-            </View>
+            </TouchableOpacity>
             <View style={[styles.section2_1, {backgroundColor: '#FFFFFF', borderColor: '#FFFFFF'}]}>
                 <Text style={[styles.section2_1_1, {color: "black"}]}>Total</Text>
                 <Text style={[styles.section2_1_1, {color: "black"}]}>£{(income - expense).toFixed(2)}</Text>
@@ -204,7 +205,7 @@ useEffect(() => {
 
           
 
-          <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={() => navigation.navigate('Add')}>
+          <TouchableOpacity style={styles.fab} activeOpacity={0.8} onPress={() => navigation.navigate('Add', {type: 'all'})}>
             <MaterialIcons name="add" color="black" size={40} />
           </TouchableOpacity>
 

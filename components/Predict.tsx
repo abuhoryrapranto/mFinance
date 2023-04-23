@@ -21,7 +21,7 @@ function Predict({navigation}: {navigation: any}) {
     let [pre, setPre] = useState(0);
     let [loading, setLoading] = useState(false);
 
-
+    //This function fetch Machine Learning model api response and save data in state.
     const predict = async () => {
 
         if(inc == '') {
@@ -70,6 +70,7 @@ function Predict({navigation}: {navigation: any}) {
         }
     }
 
+    //This function helps to save predict data in async storage.
     const savePredictBudget = async () => {
 
         try {
@@ -113,10 +114,10 @@ function Predict({navigation}: {navigation: any}) {
     return(
         <SafeAreaView>
             <View style={styles.container}>
-                <View style={styles.headSection}>
-                    <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
+                <TouchableOpacity style={styles.headSection} onPress={() => navigation.goBack()} >
+                    <MaterialIcons name="arrow-back-ios" color="white" size={20}/>
                     <Text style={{fontSize: 17, color: "white"}}>Predict Budget</Text>
-                </View>
+                </TouchableOpacity>
 
                 
                 <Text style={{color: 'white', fontSize: 15, marginTop: 20}}>Expected Income (Annually)</Text>

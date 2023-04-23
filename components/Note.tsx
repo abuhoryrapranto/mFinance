@@ -22,6 +22,7 @@ function Note({navigation}: {navigation: any}) {
 
     const isFocused = useIsFocused();
 
+    //This function used for save notes in async storage.
     const saveNote = async () => {
 
         if(note == '') {
@@ -69,6 +70,7 @@ function Note({navigation}: {navigation: any}) {
         }
     }
 
+    //This function used for fetch notes from async storage.
     const getNotes = async () => {
 
         try {
@@ -92,6 +94,7 @@ function Note({navigation}: {navigation: any}) {
         }
     }
 
+    //This function used for complete the note
     const done = async(item : any) => {
 
         const notes = await AsyncStorage.getItem('@note');
@@ -121,6 +124,7 @@ function Note({navigation}: {navigation: any}) {
             }
     } 
 
+    //This function used for delete note from async storage.
     const deleteNote = async (uuid : any) => {
 
         const newMyNote = myNote.filter((item, index) => item.id != uuid);
@@ -141,10 +145,10 @@ function Note({navigation}: {navigation: any}) {
             <SafeAreaView style={{flex: 1}}>
 
                 <View style={styles.container}>
-                    <View style={styles.headSection}>
-                        <MaterialIcons name="arrow-back-ios" color="white" size={20} onPress={() => navigation.goBack()} />
+                    <TouchableOpacity style={styles.headSection} onPress={() => navigation.goBack()} >
+                        <MaterialIcons name="arrow-back-ios" color="white" size={20} />
                         <Text style={{fontSize: 17, color: "white"}}>Notes</Text>
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={{marginTop: 1}}>
                         <FlatList
